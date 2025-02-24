@@ -1,0 +1,6 @@
+@CasaColombo.Services_HostAddress = http://localhost:5007
+
+GET {{CasaColombo.Services_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
