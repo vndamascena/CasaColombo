@@ -16,7 +16,6 @@
     <Folder Include="Interfaces\Services\IEntregasTitulos\" />
     <Folder Include="Services\EntregaTitulos\" />
     <Folder Include="Services\Home\" />
-    <Folder Include="Services\ProdOcorrFornLojas\" />
   </ItemGroup>
 
 </Project>
