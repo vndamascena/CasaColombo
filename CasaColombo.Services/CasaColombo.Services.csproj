@@ -9,14 +9,9 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Mappings\" />
-    <Folder Include="Model\Depositos\" />
-    <Folder Include="Model\Fornecedores\" />
-    <Folder Include="Model\Lojas\" />
     <Folder Include="Model\Entregas\" />
     <Folder Include="Model\Home\" />
     <Folder Include="Model\Titulos\" />
-    <Folder Include="Model\Produtos\" />
-    <Folder Include="Model\Ocorrencias\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,11 @@
-﻿namespace CasaColombo.Services.Model.Depositos
+﻿namespace CasaColombo.Services.Model.Categoria
 {
-    public class DepositosGetModel
+    public class CategoriaGetModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
+
         public string? Nome { get; set; }
+
         public DateTime DataHoraCadastro { get; set; }
         public DateTime DataHoraAlteracao { get; set; }
     }

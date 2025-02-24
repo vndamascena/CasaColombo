@@ -2,5 +2,6 @@
 {
     public class DepositosPostModel
     {
+        public string Nome { get; set; }
     }
 }
