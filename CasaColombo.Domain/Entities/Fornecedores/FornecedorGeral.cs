@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CasaColombo.Domain.Entities.Ocorrencias;
+using CasaColombo.Domain.Entities.Produtos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +19,12 @@ namespace CasaColombo.Domain.Entities.Fornecedores
         public string? TelFor { get; set; }
         public DateTime DataHoraCadastro { get; set; }
         public DateTime DataHoraAlteracao { get; set; }
+        #region Relacionamento
+
+        public List<Ocorrencia>? Ocorrencia { get; set; }
+        public List<ProdutoPiso>? ProdutosPiso { get; set; }
+
+        public List<ProdutoGeral>? ProdutosGeral { get; set; }
+        #endregion
     }
 }

@@ -12,5 +12,12 @@ namespace CasaColombo.Domain.Entities.Produtos
         public string Nome { get; set; }
         public DateTime DataHoraCadastro { get; set; }
         public DateTime DataHoraAlteracao { get; set; }
+
+        #region Relacionamentos
+
+        public List<ProdutoPiso>? ProdutosPiso { get; set; }
+        public List<ProdutoGeral>? ProdutosGeral { get; set; }
+
+        #endregion
     }
 }
