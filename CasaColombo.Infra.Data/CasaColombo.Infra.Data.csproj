@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Mappings\EntregasTitulos\" />
     <Folder Include="Mappings\Home\" />
-    <Folder Include="Mappings\ProdOcorrFornLojas\" />
     <Folder Include="Repositories\EntregasTitulos\" />
     <Folder Include="Repositories\Home\" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿using CasaColombo.Domain.Entities.Lojas;
+﻿using CasaColombo.Domain.Entities.Depositoss;
 using CasaColombo.Domain.Interfaces.Repositories.IProdOcorrFornLojas;
 using CasaColombo.Infra.Data.Contexts;
 using System;
@@ -9,20 +9,23 @@ using System.Threading.Tasks;
 
 namespace CasaColombo.Infra.Data.Repositories.ProdOcorrFornLojas
 {
-    public class LojaRepository: BaseRepository<Loja, int>, ILojaRepository
+    public class DepositosRepository : BaseRepository<Depositos, int>, IDepositosRepository
     {
-        public override List<Loja> GetAll() 
+        public override List<Depositos> GetAll()
         {
             using (var dataContext = new DataContext())
             {
-                return dataContext.Set<Loja>().OrderBy(f => f.Nome).ToList();
+                return dataContext.Set<Depositos>().OrderBy(f => f.Nome).ToList();
             }
+
+
         }
-        public Loja? GetById(int id)
+
+        public Depositos? GetById(int id)
         {
             using (var dataContext = new DataContext())
             {
-                return dataContext.Set<Loja>()
+                return dataContext.Set<Depositos>()
                 .Where(f => f.Id == id)
                 .FirstOrDefault();
 

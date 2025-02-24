@@ -16,6 +16,8 @@ namespace CasaColombo.Domain.Entities.Depositoss
         #region Relacionamento
         // Relacionamento Muitos-para-Muitos com a tabela intermediária ProdutoDeposito
         public List<ProdutoDeposito> ProdutoDepositos { get; set; }
+
+        public List<ProdutoPiso>? ProdutoPiso { get; set; }
         #endregion
     }
 }

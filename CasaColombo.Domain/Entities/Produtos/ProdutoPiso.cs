@@ -50,8 +50,8 @@ namespace CasaColombo.Domain.Entities.Produtos
 
         public Categoria? Categoria { get; set; }
         public FornecedorGeral? Fornecedor { get; set; }
-
-        public Depositos? Deposito { get; set; }
+      
+        public Depositos? Depositos { get; set; }
         public List<Lote>? Lote { get; set; } // Lista de lotes associados ao produto
         #endregion
     }
