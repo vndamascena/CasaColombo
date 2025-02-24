@@ -14,7 +14,6 @@
     <Folder Include="Interfaces\Repositories\IEntregasTitulos\" />
     <Folder Include="Interfaces\Services\IHome\" />
     <Folder Include="Interfaces\Services\IEntregasTitulos\" />
-    <Folder Include="Interfaces\Services\IProdOcorrFornLojas\" />
     <Folder Include="Services\EntregaTitulos\" />
     <Folder Include="Services\Home\" />
     <Folder Include="Services\ProdOcorrFornLojas\" />
