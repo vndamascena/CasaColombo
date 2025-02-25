@@ -4,7 +4,7 @@ using CasaColombo.Services.Model.Fornecedores;
 using CasaColombo.Services.Model.Produtos;
 using System.ComponentModel.DataAnnotations;
 
-namespace CasaColomboApp.Services.Model.Produtos
+namespace CasaColombo.Services.Model.Produtos
 {
     public class ProdutoPisoGetModel
     {

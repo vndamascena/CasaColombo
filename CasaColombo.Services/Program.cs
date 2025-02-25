@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 SwaggerExtension.AddSwaggerConfig(builder.Services);
-//ServicesExtension.AddServicesConfig(builder.Services);
+ServicesExtension.AddServicesConfig(builder.Services);
 CorsConfigExtension.AddCorsConfig(builder.Services);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

@@ -4,15 +4,10 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<InvariantGlobalization>false</InvariantGlobalization>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Mappings\" />
-    <Folder Include="Model\Entregas\" />
-    <Folder Include="Model\Home\" />
-    <Folder Include="Model\Titulos\" />
-  </ItemGroup>
+  
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
