@@ -7,15 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Home\" />
     <Folder Include="Entities\Entregas\" />
     <Folder Include="Entities\Titulos\" />
-    <Folder Include="Interfaces\Repositories\IHome\" />
     <Folder Include="Interfaces\Repositories\IEntregasTitulos\" />
-    <Folder Include="Interfaces\Services\IHome\" />
     <Folder Include="Interfaces\Services\IEntregasTitulos\" />
     <Folder Include="Services\EntregaTitulos\" />
-    <Folder Include="Services\Home\" />
   </ItemGroup>
 
 </Project>
