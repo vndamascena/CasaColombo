@@ -9,9 +9,6 @@
   <ItemGroup>
     <Folder Include="Entities\Entregas\" />
     <Folder Include="Entities\Titulos\" />
-    <Folder Include="Interfaces\Repositories\IEntregasTitulos\" />
-    <Folder Include="Interfaces\Services\IEntregasTitulos\" />
-    <Folder Include="Services\EntregaTitulos\" />
   </ItemGroup>
 
 </Project>

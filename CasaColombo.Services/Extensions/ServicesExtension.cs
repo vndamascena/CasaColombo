@@ -3,6 +3,10 @@ using CasaColombo.Domain.Interfaces.Services.IProdOcorrFornLojas;
 using CasaColombo.Domain.Services.ProdOcorrFornLojas;
 using CasaColombo.Infra.Data.Repositories.ProdOcorrFornLojas;
 using CasaColombo.Infra.Data.Repositories;
+using CasaColombo.Domain.Interfaces.Repositories.IHome;
+using CasaColombo.Domain.Interfaces.Services.IHome;
+using CasaColombo.Domain.Services.Home;
+using CasaColombo.Infra.Data.Repositories.Home;
 
 namespace CasaColombo.Services.Extensions
 {
@@ -14,7 +18,7 @@ namespace CasaColombo.Services.Extensions
             services.AddTransient<ICategoriaDomainService, CategoriaDomainService>();
             services.AddTransient<IProdutoPisoDomainService, ProdutoPisoDomainService>();
             services.AddTransient<IFornecedorGeralDomainService, FornecedorGeralDomainService>();
-           
+
             services.AddTransient<IDepositosDomainService, DepositosDomainService>();
             services.AddTransient<IOcorrenciaDomainService, OcorrenciaDomainService>();
             services.AddTransient<ITipoOcorrenciaDomainService, TipoOcorrenciaDomainService>();
@@ -36,6 +40,9 @@ namespace CasaColombo.Services.Extensions
             services.AddTransient<IProdutoGeralRepository, ProdutoGeralRepository>();
 
             services.AddTransient<IProdutoDepositoRepository, ProdutoDepositoRepository>();
+
+            services.AddTransient<IEscalaRepository, EscalaRepository>();
+            services.AddTransient<IHomeDomainService, HomeDomainService>();
 
         }
     }

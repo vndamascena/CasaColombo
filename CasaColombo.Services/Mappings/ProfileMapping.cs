@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using CasaColombo.Domain.Entities.Depositoss;
 using CasaColombo.Domain.Entities.Fornecedores;
+using CasaColombo.Domain.Entities.Home;
 using CasaColombo.Domain.Entities.Lojas;
 using CasaColombo.Domain.Entities.Ocorrencias;
 using CasaColombo.Domain.Entities.Produtos;
 using CasaColombo.Services.Model.Categoria;
 using CasaColombo.Services.Model.Depositos;
 using CasaColombo.Services.Model.Fornecedores;
+using CasaColombo.Services.Model.HomeModel.EscalaModel;
 using CasaColombo.Services.Model.Lojas;
 using CasaColombo.Services.Model.Ocorrencias;
 using CasaColombo.Services.Model.Produtos;
@@ -94,7 +96,7 @@ namespace CasaColombo.Services.Mappings
             CreateMap<TipoOcorrencia, TipoOcorrenciaGetModel>();
 
 
-          
+
 
             // FornecedorGeral
             CreateMap<FornecedorGeralPostModel, FornecedorGeral>()
@@ -108,7 +110,7 @@ namespace CasaColombo.Services.Mappings
             CreateMap<FornecedorGeral, FornecedorGeralPostModel>();
             CreateMap<FornecedorGeralPostModel, FornecedorGeral>();
 
-            
+
 
             // Depositos
             CreateMap<Depositos, DepositosGetModel>();
@@ -123,7 +125,7 @@ namespace CasaColombo.Services.Mappings
             // ProdutoDeposito
             CreateMap<ProdutoDeposito, ProdutoDepositoGetModel>();
             CreateMap<ProdutoDeposito, ProdutoDepositoModel>();
-                
+
             CreateMap<ProdutoDepositoGetModel, ProdutoDeposito>();
             CreateMap<ProdutoDepositoPutModel, ProdutoDeposito>()
                 .ForMember(dest => dest.DepositoId, opt => opt.MapFrom(src => src.DepositoId))
@@ -131,10 +133,10 @@ namespace CasaColombo.Services.Mappings
                 .ForMember(dest => dest.Quantidade, opt => opt.MapFrom(src => src.Quantidade));
             CreateMap<ProdutoDeposito, ProdutoDepositoPutModel>()
                  .ForMember(dest => dest.DepositoId, opt => opt.MapFrom(src => src.Id))
-               
+
                 .ForMember(dest => dest.Quantidade, opt => opt.MapFrom(src => src.Quantidade));
             CreateMap<ProdutoDepositoModel, ProdutoDeposito>();
-                
+
 
             // loja 
 
@@ -161,7 +163,21 @@ namespace CasaColombo.Services.Mappings
             CreateMap<Venda, VendaPisoGetModel>();
             CreateMap<VendaProdutoGeral, VendaProdutoGeralGetModel>();
 
-        }
+
+
+
+            CreateMap<EscalaPostModel, Escala>()
+               .AfterMap((model, entity) =>
+               {
+                   entity.DataCadastro = DateTime.Now;
+
+
+               });
+
+            CreateMap<Escala, EscalaGetModel>();
+            CreateMap<EscalaGetModel, Escala>();
+
+        } 
 
 
     }

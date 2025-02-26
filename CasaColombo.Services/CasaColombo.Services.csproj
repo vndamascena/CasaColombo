@@ -21,4 +21,8 @@
     <ProjectReference Include="..\CasaColombo.Infra.Data\CasaColombo.Infra.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\Titulo\" />
+  </ItemGroup>
+
 </Project>

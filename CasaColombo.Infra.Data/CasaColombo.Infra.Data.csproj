@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Mappings\EntregasTitulos\" />
-    <Folder Include="Repositories\EntregasTitulos\" />
   </ItemGroup>
 
   <ItemGroup>
