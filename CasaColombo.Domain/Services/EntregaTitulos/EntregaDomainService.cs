@@ -76,8 +76,8 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
                 entregaAtualizado.DataCadastro = DateTime.Now;
             }
 
-            _entregaRepository?.Update(entregaAtualizado);
-            return _entregaRepository?.GetById(entrega.Id);
+            _entregaRepository?.Updates(entregaAtualizado);
+            return _entregaRepository?.GetByIds(entrega.Id);
         }
 
         public Entrega CadastrarMotorista(Entrega entrega)
@@ -117,8 +117,8 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
                 entregaAtualizado.DataCadastro = DateTime.Now;
             }
 
-            _entregaRepository?.Update(entregaAtualizado);
-            return _entregaRepository?.GetById(entrega.Id);
+            _entregaRepository?.Updates(entregaAtualizado);
+            return _entregaRepository?.GetByIds(entrega.Id);
         }
 
        
@@ -134,14 +134,14 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
             if (registro == null)
             {
                 // Verifica se é um ID de pendência
-                pendencia = _pendenciaEntregaRepository.GetById(entrega.Id);
+                pendencia = _pendenciaEntregaRepository.GetByIds(entrega.Id);
                 if (pendencia == null)
                 {
                     throw new ApplicationException("Entrega ou pendência não encontrada.");
                 }
 
                 // Obtém a entrega associada à pendência
-                entrega = _entregaRepository.GetById(pendencia.EntregaId);
+                entrega = _entregaRepository.GetByIds(pendencia.EntregaId);
                 if (entrega == null)
                 {
                     throw new ApplicationException("Entrega associada à pendência não encontrada.");
@@ -184,7 +184,7 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
             if (pendencia != null)
             {
                 pendencia.Ativo = false;
-                _pendenciaEntregaRepository.Update(pendencia);
+                _pendenciaEntregaRepository.Updates(pendencia);
             }
             else
             {
@@ -193,30 +193,30 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
                 if (pendencia != null)
                 {
                     pendencia.Ativo = false;
-                    _pendenciaEntregaRepository.Update(pendencia);
+                    _pendenciaEntregaRepository.Updates(pendencia);
                 }
             }
 
-            _entregaRepository?.Update(entregaAtualizado);
-            return _entregaRepository?.GetById(entrega.Id);
+            _entregaRepository?.Updates(entregaAtualizado);
+            return _entregaRepository?.GetByIds(entrega.Id);
         }
 
         public BaixaEntrega BaixaEntrega(int id, string matricula, string dataEntregaBaixa, string diaSemanaBaixa)
         {
-            var entrega = _entregaRepository.GetById(id);
+            var entrega = _entregaRepository.GetByIds(id);
             PendenciaEntrega pendencia = null;
 
             if (entrega == null)
             {
                 // Verifica se é um ID de pendência
-                pendencia = _pendenciaEntregaRepository.GetById(id);
+                pendencia = _pendenciaEntregaRepository.GetByIds(id);
                 if (pendencia == null)
                 {
                     throw new ApplicationException("Entrega ou pendência não encontrada.");
                 }
 
                 // Obtém a entrega associada à pendência
-                entrega = _entregaRepository.GetById(pendencia.EntregaId);
+                entrega = _entregaRepository.GetByIds(pendencia.EntregaId);
                 if (entrega == null)
                 {
                     throw new ApplicationException("Entrega associada à pendência não encontrada.");
@@ -250,15 +250,15 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
 
             Console.WriteLine($"DataEntrega: {baixaEntrega.DataEntregaBaixa}");
             Console.WriteLine($"DiaSemana: {baixaEntrega.DiaSemanaBaixa}");
-            _baixaEntregaRepository.Add(baixaEntrega);
+            _baixaEntregaRepository.Adds(baixaEntrega);
 
             entrega.Ativo = false;
-            _entregaRepository.Update(entrega);
+            _entregaRepository.Updates(entrega);
 
             if (pendencia != null)
             {
                 pendencia.Ativo = false;
-                _pendenciaEntregaRepository.Update(pendencia);
+                _pendenciaEntregaRepository.Updates(pendencia);
             }
             else
             {
@@ -267,7 +267,7 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
                 if (pendencia != null)
                 {
                     pendencia.Ativo = false;
-                    _pendenciaEntregaRepository.Update(pendencia);
+                    _pendenciaEntregaRepository.Updates(pendencia);
                 }
             }
 
@@ -277,7 +277,7 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
         public Pagamento CadastrarPagamento(Pagamento pagamento, int id, string matricula)
         {
             // Obter a entrega associada ao pagamento
-            var entrega = _entregaRepository.GetById(id);
+            var entrega = _entregaRepository.GetByIds(id);
 
             // Verificar se a entrega está ativa
             if (!entrega.Ativo)
@@ -293,13 +293,13 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
 
 
 
-            _pagamentoRepository.Add(pagamento);
+            _pagamentoRepository.Adds(pagamento);
 
            
-            pagamento = _pagamentoRepository?.GetById(pagamento.IdPagamento);
+            pagamento = _pagamentoRepository?.GetByIds(pagamento.IdPagamento);
 
           
-            _pagamentoRepository.Update(pagamento);
+            _pagamentoRepository.Updates(pagamento);
 
             return pagamento;
         }
@@ -312,8 +312,8 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
         {
             entrega.UsuarioId = matricula;
             entrega.Ativo = true;
-            _entregaRepository?.Add(entrega);
-            entrega = _entregaRepository?.GetById(entrega.Id);
+            _entregaRepository?.Adds(entrega);
+            entrega = _entregaRepository?.GetByIds(entrega.Id);
 
             return entrega;
         }
@@ -331,7 +331,7 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
 
         public List<BaixaEntrega> ConsultarBaixa()
         {
-            var baixaEntrega = _baixaEntregaRepository?.GetAll();
+            var baixaEntrega = _baixaEntregaRepository?.GetAlls();
 
             if (baixaEntrega == null)
                 return new List<BaixaEntrega>();
@@ -341,14 +341,14 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
 
         public List<Impressao> ConsultarImpressao()
         {
-            var impressao = _impressaoRepository?.GetAll();
+            var impressao = _impressaoRepository?.GetAlls();
             if (impressao == null)
                 return new List<Impressao>();
             return impressao.ToList();
         }
         public List<Pagamento> ConsultarPagamento()
         {
-            var pagamento = _pagamentoRepository?.GetAll();
+            var pagamento = _pagamentoRepository?.GetAlls();
             if (pagamento == null)
                 return new List<Pagamento>();
             return pagamento.ToList();
@@ -372,13 +372,13 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
 
 
 
-            _entregaRepository.Delete(entrega);
+            _entregaRepository.Deletes(entrega);
             return entrega;
         }
 
         public void Impressao(int id, string matricula)
         {
-            var impressao = _entregaRepository.GetById(id);
+            var impressao = _entregaRepository.GetByIds(id);
             if (impressao == null)
             {
                 throw new ApplicationException("impressao não encontrada.");
@@ -400,21 +400,21 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
 
                 DataTime = DateTime.Now,
             };
-            _impressaoRepository.Add(impress);
+            _impressaoRepository.Adds(impress);
         }
 
       
 
         public Entrega ObterPorId(int id)
         {
-            var entrega = _entregaRepository?.GetById(id);
+            var entrega = _entregaRepository?.GetByIds(id);
 
             return entrega;
         }
 
         public void PendenciaEntrega(int id, string matricula, string observacaoPendencia, string dataEntregaProximaEntrega, string diaSemanaPendencia )
         {
-            var entrega = _entregaRepository.GetById(id);
+            var entrega = _entregaRepository.GetByIds(id);
             if (entrega == null)
             {
                 throw new ApplicationException("Entrega não encontrada.");
@@ -456,7 +456,7 @@ namespace CasaColombo.Domain.Services.EntregaTitulos
                
             };
 
-            _pendenciaEntregaRepository.Add(pendenciaEntrega);
+            _pendenciaEntregaRepository.Adds(pendenciaEntrega);
         }
 
 

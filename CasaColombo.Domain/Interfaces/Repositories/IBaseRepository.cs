@@ -15,5 +15,12 @@ namespace CasaColombo.Domain.Interfaces.Repositories
         List<TEntity> GetAll();
         TEntity GetById(TKey id);
 
+
+        void Adds(TEntity entity);
+        void Updates(TEntity entity);
+        void Deletes(TEntity entity);
+        List<TEntity> GetAlls();
+        TEntity GetByIds(TKey id);
+
     }
 }

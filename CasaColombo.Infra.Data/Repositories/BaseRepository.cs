@@ -54,6 +54,47 @@ namespace CasaColombo.Infra.Data.Repositories
             }
         }
 
+        public virtual void Adds(TEntity entity)
+        {
+            using (var dataContext = new DataContextSecundaria())
+            {
+                dataContext.Add(entity);
+                dataContext.SaveChanges();
+            }
+        }
 
+        public virtual void Updates(TEntity entity)
+        {
+            using (var dataContext = new DataContextSecundaria())
+            {
+                dataContext.Update(entity);
+                dataContext.SaveChanges();
+            }
+        }
+
+        public virtual void Deletes(TEntity entity)
+        {
+            using (var dataContext = new DataContextSecundaria())
+            {
+                dataContext.Remove(entity);
+                dataContext.SaveChanges();
+            }
+        }
+
+        public virtual List<TEntity> GetAlls()
+        {
+            using (var dataContext = new DataContextSecundaria())
+            {
+                return dataContext.Set<TEntity>().ToList();
+            }
+        }
+
+        public virtual TEntity GetByIds(TKey id)
+        {
+            using (var dataContext = new DataContextSecundaria())
+            {
+                return dataContext.Set<TEntity>().Find(id);
+            }
+        }
     }
 }

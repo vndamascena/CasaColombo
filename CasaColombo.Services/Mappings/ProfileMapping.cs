@@ -1,17 +1,24 @@
 ﻿using AutoMapper;
 using CasaColombo.Domain.Entities.Depositoss;
+using CasaColombo.Domain.Entities.Entregas;
 using CasaColombo.Domain.Entities.Fornecedores;
 using CasaColombo.Domain.Entities.Home;
 using CasaColombo.Domain.Entities.Lojas;
 using CasaColombo.Domain.Entities.Ocorrencias;
 using CasaColombo.Domain.Entities.Produtos;
+using CasaColombo.Domain.Entities.Titulos;
 using CasaColombo.Services.Model.Categoria;
 using CasaColombo.Services.Model.Depositos;
+using CasaColombo.Services.Model.Entrega;
 using CasaColombo.Services.Model.Fornecedores;
 using CasaColombo.Services.Model.HomeModel.EscalaModel;
+using CasaColombo.Services.Model.Impressao;
 using CasaColombo.Services.Model.Lojas;
 using CasaColombo.Services.Model.Ocorrencias;
+using CasaColombo.Services.Model.Pagamento;
+using CasaColombo.Services.Model.PendenciaEntrega;
 using CasaColombo.Services.Model.Produtos;
+using CasaColombo.Services.Model.Titulo;
 
 
 
@@ -177,7 +184,87 @@ namespace CasaColombo.Services.Mappings
             CreateMap<Escala, EscalaGetModel>();
             CreateMap<EscalaGetModel, Escala>();
 
-        } 
+            CreateMap<EntregaPostModel, Entrega>()
+                .AfterMap((model, entity) =>
+                {
+                    entity.DataCadastro = DateTime.Now;
+                    entity.Ativo = true;
+
+                });
+            CreateMap<TituloReceberPostModel, TituloReceber>()
+                .AfterMap((model, entity) =>
+                {
+                    entity.DataCadastro = DateTime.Now;
+                    entity.Ativo = true;
+                });
+            CreateMap<TituloReceberFuncionarioPostModel, TituloReceberFuncionario>()
+               .AfterMap((model, entity) =>
+               {
+                   entity.DataCadastro = DateTime.Now;
+                   entity.Ativo = true;
+               });
+            CreateMap<BaixaEntregaPostModel, BaixaEntrega>()
+                .AfterMap((model, entity) =>
+                {
+                    entity.DataTime = DateTime.Now;
+                });
+            CreateMap<BaixaTituloPostModel, BaixaTitulo>()
+                .AfterMap((model, entity) =>
+                {
+                    entity.DataTime = DateTime.Now;
+                });
+            CreateMap<BaixaTituloFuncionarioPostModel, BaixaTituloFuncionario>()
+               .AfterMap((model, entity) =>
+               {
+                   entity.DataTime = DateTime.Now;
+               });
+            CreateMap<PendenciaEntregaPostModel, PendenciaEntrega>()
+
+                .AfterMap((model, entity) =>
+                {
+                    entity.DataTime = DateTime.Now;
+                });
+            CreateMap<ImpressaoPostModel, Impressao>()
+                .AfterMap((model, entity) =>
+                {
+                    entity.DataTime = DateTime.Now;
+                });
+            CreateMap<PagamentoPostModel, Pagamento>()
+               .AfterMap((model, entity) =>
+               {
+                   entity.DataTime = DateTime.Now;
+               });
+            CreateMap<EscalaPostModel, Escala>()
+               .AfterMap((model, entity) =>
+               {
+                   entity.DataCadastro = DateTime.Now;
+
+
+               });
+
+            CreateMap<Entrega, EntregaGetModel>();
+            CreateMap<EntregaGetModel, Entrega>();
+            CreateMap<EntregaPutModel, Entrega>();
+            CreateMap<Entrega, EntregaPutModel>();
+            CreateMap<TituloReceberPutModel, TituloReceber>();
+            CreateMap<TituloReceber, TituloReceberPutModel>();
+            CreateMap<BaixaEntrega, BaixaEntregaGetModel>();
+            CreateMap<BaixaTitulo, BaixaTituloGetModel>();
+            CreateMap<PendenciaEntrega, PendenciaEntregaGetModel>();
+            CreateMap<Impressao, ImpressaoGetModel>();
+            CreateMap<ImpressaoGetModel, Impressao>();
+            CreateMap<PagamentoGetModel, Pagamento>();
+            CreateMap<Pagamento, PagamentoGetModel>();
+            CreateMap<TituloReceber, TituloReceberGetModel>();
+            CreateMap<TituloReceberGetModel, TituloReceber>();
+
+            CreateMap<TituloReceberFuncionarioPutModel, TituloReceberFuncionario>();
+            CreateMap<TituloReceberFuncionario, TituloReceberFuncionarioPutModel>();
+            CreateMap<BaixaTituloFuncionario, BaixaTituloFuncionarioGetModel>();
+            CreateMap<TituloReceberFuncionario, TituloReceberFuncionarioGetModel>();
+            CreateMap<TituloReceberFuncionarioGetModel, TituloReceberFuncionario>();
+
+        }
 
 
     }

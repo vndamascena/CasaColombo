@@ -7,6 +7,11 @@ using CasaColombo.Domain.Interfaces.Repositories.IHome;
 using CasaColombo.Domain.Interfaces.Services.IHome;
 using CasaColombo.Domain.Services.Home;
 using CasaColombo.Infra.Data.Repositories.Home;
+using CasaColombo.Domain.Interfaces.Repositories.IEntregasTitulos;
+using CasaColombo.Domain.Interfaces.Services.IEntregasTitulos;
+using CasaColombo.Domain.Services.EntregaTitulos;
+using CasaColombo.Infra.Data.Repositories.EntregasTitulos;
+using EntregaTitulo.Infra.Data.Repositories;
 
 namespace CasaColombo.Services.Extensions
 {
@@ -43,6 +48,18 @@ namespace CasaColombo.Services.Extensions
 
             services.AddTransient<IEscalaRepository, EscalaRepository>();
             services.AddTransient<IHomeDomainService, HomeDomainService>();
+            services.AddTransient<IEntregaDomainService, EntregaDomainService>();
+            services.AddTransient<IEntregaRepository, EntregaRepository>();
+            services.AddTransient<IPendenciaEntregaRepository, PendenciaEntregaRepository>();
+            services.AddTransient<ITituloReceberDomainService, TituloReceberDomainService>();
+            services.AddTransient<IBaixaTituloRepository, BaixaTituloRepository>();
+            services.AddTransient<ITituloReceberRepository, TituloReceberRepository>();
+            services.AddTransient<IBaixaEntregaRepository, BaixaEntregaRepository>();
+            services.AddTransient<IImpressaoRepository, ImpressaoRepository>();
+            services.AddTransient<IPagamentoRepository, PagamentoRepository>();
+            services.AddTransient<ITituloReceberFuncionarioDomainService, TituloReceberFuncionarioDomainService>();
+            services.AddTransient<IBaixaTituloFuncionarioRepository, BaixaTituloFuncionarioRepository>();
+            services.AddTransient<ITituloReceberFuncionarioRespository, TituloReceberFuncionarioRepository>();
 
         }
     }

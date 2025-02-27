@@ -24,15 +24,15 @@ namespace CasaColombo.Domain.Services.Home
         public Escala Cadastrar(Escala escala)
         {
 
-            _escalaRepository?.Add(escala);
-            escala = _escalaRepository?.GetById(escala.Id);
+            _escalaRepository?.Adds(escala);
+            escala = _escalaRepository?.GetByIds(escala.Id);
 
             return escala;
         }
 
         public List<Escala> Consultar()
         {
-            var escala = _escalaRepository?.GetAll();
+            var escala = _escalaRepository?.GetAlls();
             if (escala == null)
                 return new List<Escala>();
             return escala.ToList();
@@ -40,7 +40,7 @@ namespace CasaColombo.Domain.Services.Home
 
         public Escala ObterPorId(int id)
         {
-            var escala = _escalaRepository.GetById(id);
+            var escala = _escalaRepository.GetByIds(id);
             return escala;
 
         }

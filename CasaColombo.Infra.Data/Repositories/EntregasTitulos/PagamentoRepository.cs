@@ -13,10 +13,10 @@ namespace EntregaTitulo.Infra.Data.Repositories
 {
     public class PagamentoRepository : BaseRepository<Pagamento, int>, IPagamentoRepository
     {
-        protected readonly DataContext _dataContext;
+        protected readonly DataContextSecundaria _dataContext;
         public List<Pagamento> GetAll(bool ativo)
         {
-            using (var dataContext = new DataContext())
+            using (var dataContext = new DataContextSecundaria())
                 return dataContext
                     .Set<Pagamento>()
 

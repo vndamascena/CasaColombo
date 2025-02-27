@@ -1,7 +1,8 @@
 ﻿
-using CasaColombo.Domain.Entities.Entregas;
+using CasaColombo.Domain.Entities.Titulos;
 using CasaColombo.Domain.Interfaces.Repositories.IEntregasTitulos;
 using CasaColombo.Infra.Data.Contexts;
+using CasaColombo.Infra.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,25 +11,26 @@ using System.Threading.Tasks;
 
 namespace CasaColombo.Infra.Data.Repositories.EntregasTitulos
 {
-    public class EntregaRepository : BaseRepository<Entrega, int>, IEntregaRepository
+    public class TituloReceberFuncionarioRepository : BaseRepository<TituloReceberFuncionario, int>, ITituloReceberFuncionarioRespository
     {
 
         protected readonly DataContextSecundaria _dataContext;
-        public  List<Entrega> GetAll(bool ativo)
+        public List<TituloReceberFuncionario> GetAll(bool ativo)
         {
             using (var dataContext = new DataContextSecundaria())
                 return dataContext
-                    .Set<Entrega>()
-                    
+                    .Set<TituloReceberFuncionario>()
+
                     .OrderBy(p => p.NomeCliente)
 
                     .ToList();
         }
-        public override List<Entrega> GetAll()
+
+        public override List<TituloReceberFuncionario> GetAll()
         {
             using (var dataContext = new DataContextSecundaria())
                 return dataContext
-                    .Set<Entrega>()
+                    .Set<TituloReceberFuncionario>()
 
                     .OrderBy(p => p.NomeCliente)
 

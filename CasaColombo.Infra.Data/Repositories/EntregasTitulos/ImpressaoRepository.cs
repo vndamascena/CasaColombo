@@ -12,10 +12,10 @@ namespace CasaColombo.Infra.Data.Repositories.EntregasTitulos
 {
     public class ImpressaoRepository : BaseRepository<Impressao, int>, IImpressaoRepository
     {
-        protected readonly DataContext _dataContext;
+        protected readonly DataContextSecundaria _dataContext;
         public List<Impressao> GetAll(bool ativo)
         {
-            using (var dataContext = new DataContext())
+            using (var dataContext = new DataContextSecundaria())
                 return dataContext
                     .Set<Impressao>()
 

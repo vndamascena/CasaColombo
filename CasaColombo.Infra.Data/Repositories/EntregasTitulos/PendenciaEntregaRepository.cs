@@ -13,7 +13,7 @@ namespace EntregaTitulo.Infra.Data.Repositories
 {
     public class PendenciaEntregaRepository : BaseRepository<PendenciaEntrega, int>, IPendenciaEntregaRepository
     {
-        protected readonly DataContext _dataContext;
+        protected readonly DataContextSecundaria _dataContext;
         public List<PendenciaEntrega> GetBaixaPendenciaId(int entregaId)
         {
             throw new NotImplementedException();
@@ -27,7 +27,7 @@ namespace EntregaTitulo.Infra.Data.Repositories
 
         public List<PendenciaEntrega> GetAll(bool ativo)
         {
-            using (var dataContext = new DataContext())
+            using (var dataContext = new DataContextSecundaria())
                 return dataContext
                     .Set<PendenciaEntrega>()
 

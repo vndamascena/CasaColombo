@@ -11,10 +11,10 @@ namespace CasaColombo.Infra.Data.Repositories.Home
 {
     public class EscalaRepository: BaseRepository<Escala, int>, IEscalaRepository
     {
-        protected DataContext _dataContext;
+        protected DataContextSecundaria _dataContext;
         public List<Escala> Get(int id)
         {
-            using (var dataContext = new  DataContext())
+            using (var dataContext = new  DataContextSecundaria())
                 return dataContext
                     .Set<Escala>()
                     .OrderBy(x => x.Nome)
