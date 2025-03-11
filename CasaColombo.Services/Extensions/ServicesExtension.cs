@@ -60,6 +60,8 @@ namespace CasaColombo.Services.Extensions
             services.AddTransient<ITituloReceberFuncionarioDomainService, TituloReceberFuncionarioDomainService>();
             services.AddTransient<IBaixaTituloFuncionarioRepository, BaixaTituloFuncionarioRepository>();
             services.AddTransient<ITituloReceberFuncionarioRespository, TituloReceberFuncionarioRepository>();
+            services.AddTransient<IProdutoAllDomainService, ProdutoAllDomainService>();
+            services.AddTransient<IProdutoAllRepository, ProdutoAllRepository>();
 
         }
     }

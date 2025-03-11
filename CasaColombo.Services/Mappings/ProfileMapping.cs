@@ -264,6 +264,13 @@ namespace CasaColombo.Services.Mappings
             CreateMap<TituloReceberFuncionario, TituloReceberFuncionarioGetModel>();
             CreateMap<TituloReceberFuncionarioGetModel, TituloReceberFuncionario>();
 
+            CreateMap<ProdutoAll, ProdutoAllGetModel>();
+            CreateMap<ProdutoAllGetModel, ProdutoAll>();
+            CreateMap<ProdutoAllPutModel, ProdutoAll>();
+            CreateMap<ProdutoAll, ProdutoAllPutModel>();
+            CreateMap<ProdutoAllPostModel, ProdutoAll>();
+            CreateMap<ProdutoAll, ProdutoAllPostModel>();
+
         }
 
 
