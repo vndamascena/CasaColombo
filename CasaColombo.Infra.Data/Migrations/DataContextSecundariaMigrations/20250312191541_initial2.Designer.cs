@@ -4,16 +4,19 @@ using CasaColombo.Infra.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CasaColombo.Infra.Data.Migrations
+namespace CasaColombo.Infra.Data.Migrations.DataContextSecundariaMigrations
 {
     [DbContext(typeof(DataContextSecundaria))]
-    partial class DataContextSecundariaModelSnapshot : ModelSnapshot
+    [Migration("20250312191541_initial2")]
+    partial class initial2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

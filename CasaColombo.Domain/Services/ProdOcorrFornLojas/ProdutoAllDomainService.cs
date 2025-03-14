@@ -60,7 +60,7 @@ namespace CasaColombo.Domain.Services.ProdOcorrFornLojas
             var produtoAll = ObterPorId(id);
             if (produtoAll == null)
                 throw new ArgumentNullException("Produto não encontrado para exclusão");
-
+            produtoAll.Ativo = false;
             _produtoAllRepository?.Delete(produtoAll);
             return produtoAll;
         }

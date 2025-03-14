@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CasaColombo.Infra.Data.Migrations.Data
+namespace CasaColombo.Infra.Data.Migrations
 {
     /// <inheritdoc />
     public partial class initial : Migration
@@ -181,6 +181,40 @@ namespace CasaColombo.Infra.Data.Migrations.Data
                         name: "FK_PRODUTOPISO_FORNECEDORGERAL_FORNECEDORID",
                         column: x => x.FORNECEDORID,
                         principalTable: "FORNECEDORGERAL",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PRODUTOFALTA",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NOME = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CODIGOSISTEMA = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CODIGOFORNECEDOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LOJA = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OBSERVACAO = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DATAHORACADASTRO = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DATAHORAALTERACAO = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ATIVO = table.Column<bool>(type: "bit", nullable: false),
+                    PRODUTOALLID = table.Column<int>(type: "int", nullable: false),
+                    LOJAID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PRODUTOFALTA", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_PRODUTOFALTA_Loja_LOJAID",
+                        column: x => x.LOJAID,
+                        principalTable: "Loja",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PRODUTOFALTA_PRODUTOALL_PRODUTOALLID",
+                        column: x => x.PRODUTOALLID,
+                        principalTable: "PRODUTOALL",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -448,6 +482,16 @@ namespace CasaColombo.Infra.Data.Migrations.Data
                 column: "PRODUTOGERALID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PRODUTOFALTA_LOJAID",
+                table: "PRODUTOFALTA",
+                column: "LOJAID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PRODUTOFALTA_PRODUTOALLID",
+                table: "PRODUTOFALTA",
+                column: "PRODUTOALLID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PRODUTOGERAL_IDCATEGORIA",
                 table: "PRODUTOGERAL",
                 column: "IDCATEGORIA");
@@ -493,7 +537,7 @@ namespace CasaColombo.Infra.Data.Migrations.Data
                 name: "HISTORICOVENDA");
 
             migrationBuilder.DropTable(
-                name: "PRODUTOALL");
+                name: "PRODUTOFALTA");
 
             migrationBuilder.DropTable(
                 name: "VENDAPRODUTOGERAL");
@@ -503,6 +547,9 @@ namespace CasaColombo.Infra.Data.Migrations.Data
 
             migrationBuilder.DropTable(
                 name: "LOTE");
+
+            migrationBuilder.DropTable(
+                name: "PRODUTOALL");
 
             migrationBuilder.DropTable(
                 name: "PRODUTODEPOSITO");

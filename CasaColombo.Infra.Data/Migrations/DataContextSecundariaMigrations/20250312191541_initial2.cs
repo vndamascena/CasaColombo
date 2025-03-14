@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CasaColombo.Infra.Data.Migrations
+namespace CasaColombo.Infra.Data.Migrations.DataContextSecundariaMigrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class initial2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

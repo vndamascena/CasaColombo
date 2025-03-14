@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CasaColombo.Infra.Data.Migrations.Data
+namespace CasaColombo.Infra.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -474,6 +474,67 @@ namespace CasaColombo.Infra.Data.Migrations.Data
                     b.ToTable("PRODUTODEPOSITO", (string)null);
                 });
 
+            modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoFalta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("ATIVO");
+
+                    b.Property<string>("Codigo")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("CODIGOSISTEMA");
+
+                    b.Property<string>("CodigoFornecedor")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("CODIGOFORNECEDOR");
+
+                    b.Property<DateTime>("DataHoraAlteracao")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DATAHORAALTERACAO");
+
+                    b.Property<DateTime>("DataHoraCadastro")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DATAHORACADASTRO");
+
+                    b.Property<int>("LojaId")
+                        .HasColumnType("int")
+                        .HasColumnName("LOJAID");
+
+                    b.Property<string>("NomeProduto")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)")
+                        .HasColumnName("NOME");
+
+                    b.Property<int>("ProdutoAllId")
+                        .HasColumnType("int")
+                        .HasColumnName("PRODUTOALLID");
+
+                    b.Property<string>("loja")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LOJA");
+
+                    b.Property<string>("observacao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("OBSERVACAO");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LojaId");
+
+                    b.HasIndex("ProdutoAllId");
+
+                    b.ToTable("PRODUTOFALTA", (string)null);
+                });
+
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoGeral", b =>
                 {
                     b.Property<int>("Id")
@@ -815,6 +876,25 @@ namespace CasaColombo.Infra.Data.Migrations.Data
                     b.Navigation("ProdutoGeral");
                 });
 
+            modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoFalta", b =>
+                {
+                    b.HasOne("CasaColombo.Domain.Entities.Lojas.Loja", "Loja")
+                        .WithMany("ProdutoFalta")
+                        .HasForeignKey("LojaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CasaColombo.Domain.Entities.Produtos.ProdutoAll", "ProdutoAll")
+                        .WithMany("ProdutoFalta")
+                        .HasForeignKey("ProdutoAllId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Loja");
+
+                    b.Navigation("ProdutoAll");
+                });
+
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoGeral", b =>
                 {
                     b.HasOne("CasaColombo.Domain.Entities.Produtos.Categoria", "Categoria")
@@ -910,6 +990,8 @@ namespace CasaColombo.Infra.Data.Migrations.Data
             modelBuilder.Entity("CasaColombo.Domain.Entities.Lojas.Loja", b =>
                 {
                     b.Navigation("Ocorrencia");
+
+                    b.Navigation("ProdutoFalta");
                 });
 
             modelBuilder.Entity("CasaColombo.Domain.Entities.Ocorrencias.Ocorrencia", b =>
@@ -932,6 +1014,11 @@ namespace CasaColombo.Infra.Data.Migrations.Data
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.Lote", b =>
                 {
                     b.Navigation("Vendas");
+                });
+
+            modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoAll", b =>
+                {
+                    b.Navigation("ProdutoFalta");
                 });
 
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoDeposito", b =>
