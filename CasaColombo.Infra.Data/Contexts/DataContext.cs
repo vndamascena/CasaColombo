@@ -37,6 +37,7 @@ namespace CasaColombo.Infra.Data.Contexts
             modelBuilder.ApplyConfiguration(new ProdutoGeralMap());
             modelBuilder.ApplyConfiguration(new ProdutoAllMap());
             modelBuilder.ApplyConfiguration(new ProdutoFaltaMap());
+            modelBuilder.ApplyConfiguration(new BaixaAutProdFaltMap());
 
         }
 

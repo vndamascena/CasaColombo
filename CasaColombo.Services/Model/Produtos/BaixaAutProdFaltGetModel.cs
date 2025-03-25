@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using Microsoft.Extensions.Options;
-
-namespace CasaColombo.Services.Model.Produtos
+﻿namespace CasaColombo.Services.Model.Produtos
 {
-    public class ProdutoFaltaGetModel
+    public class BaixaAutProdFaltGetModel
     {
         public int? Id { get; set; }
         public string? NomeProduto { get; set; }
@@ -16,9 +13,8 @@ namespace CasaColombo.Services.Model.Produtos
         public string? Valor1 { get; set; }
         public string? Fornecedor2 { get; set; }
         public string? Valor2 { get; set; }
-        public DateTime DataHoraCadastro { get; set; }
-        public DateTime DataHoraAlteracao { get; set; }
+        public DateTime DataHoraBaixa { get; set; }
         public string? Usuario { get; set; }
-        public string? UsuarioAutorizador { get; set; }
+        public string? UsuarioBaixa { get; set; }
     }
 }

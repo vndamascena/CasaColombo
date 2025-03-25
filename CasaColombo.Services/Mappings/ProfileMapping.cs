@@ -276,7 +276,16 @@ namespace CasaColombo.Services.Mappings
             CreateMap<ProdutoFalta, ProdutoFaltaPutModel>();
             CreateMap<ProdutoFaltaPostModel, ProdutoFalta>();
             CreateMap<ProdutoFalta, ProdutoFaltaPostModel>();
+            CreateMap<BaixaAutProdFalt, BaixaAutProdFaltGetModel>();
+            CreateMap<BaixaAutProdFaltGetModel, BaixaAutProdFalt>();
+            CreateMap<BaixaAutProdFaltPostModel, BaixaAutProdFalt>();
+            CreateMap<BaixaAutProdFalt, BaixaAutProdFaltPostModel>();
+            CreateMap<ProdutoFalta, BaixaAutProdFaltGetModel>();
+            CreateMap<BaixaAutProdFaltGetModel, ProdutoFalta>();
+            CreateMap<ProdutoFalta, BaixaAutProdFaltPostModel>();
+            CreateMap<BaixaAutProdFaltPostModel, ProdutoFalta>();
 
+    
 
         }
 

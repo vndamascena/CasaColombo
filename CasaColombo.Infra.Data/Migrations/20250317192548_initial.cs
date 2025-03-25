@@ -200,7 +200,14 @@ namespace CasaColombo.Infra.Data.Migrations
                     DATAHORAALTERACAO = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ATIVO = table.Column<bool>(type: "bit", nullable: false),
                     PRODUTOALLID = table.Column<int>(type: "int", nullable: false),
-                    LOJAID = table.Column<int>(type: "int", nullable: false)
+                    LOJAID = table.Column<int>(type: "int", nullable: false),
+                    USUARIO = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    USUARIOAUTORIZADOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DATASOLICITACAO = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FORNECEDOR1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VALOR1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FORNECEDOR2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VALOR2 = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -326,6 +333,39 @@ namespace CasaColombo.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BAIXAAUTPRODFALT",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NOMEPRODUTO = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CODIGO = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CODIGOFORNECEDOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProdutoFaltaId = table.Column<int>(type: "int", nullable: false),
+                    LOJA = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OBSERVACAO = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DATASOLICITACAO = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FORNECEDOR1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VALOR1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FORNECEDOR2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VALOR2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DATAHORABAIXA = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    USUARIO = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    USUARIOAUTORIZADOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    USUARIOBAIXA = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BAIXAAUTPRODFALT", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_BAIXAAUTPRODFALT_PRODUTOFALTA_ProdutoFaltaId",
+                        column: x => x.ProdutoFaltaId,
+                        principalTable: "PRODUTOFALTA",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BAIXAOCORRENCIA",
                 columns: table => new
                 {
@@ -424,6 +464,11 @@ namespace CasaColombo.Infra.Data.Migrations
                         principalTable: "LOTE",
                         principalColumn: "ID");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BAIXAAUTPRODFALT_ProdutoFaltaId",
+                table: "BAIXAAUTPRODFALT",
+                column: "ProdutoFaltaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BAIXAOCORRENCIA_OCORRENCIAID",
@@ -531,16 +576,19 @@ namespace CasaColombo.Infra.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BAIXAAUTPRODFALT");
+
+            migrationBuilder.DropTable(
                 name: "BAIXAOCORRENCIA");
 
             migrationBuilder.DropTable(
                 name: "HISTORICOVENDA");
 
             migrationBuilder.DropTable(
-                name: "PRODUTOFALTA");
+                name: "VENDAPRODUTOGERAL");
 
             migrationBuilder.DropTable(
-                name: "VENDAPRODUTOGERAL");
+                name: "PRODUTOFALTA");
 
             migrationBuilder.DropTable(
                 name: "OCORRENCIA");
@@ -549,10 +597,10 @@ namespace CasaColombo.Infra.Data.Migrations
                 name: "LOTE");
 
             migrationBuilder.DropTable(
-                name: "PRODUTOALL");
+                name: "PRODUTODEPOSITO");
 
             migrationBuilder.DropTable(
-                name: "PRODUTODEPOSITO");
+                name: "PRODUTOALL");
 
             migrationBuilder.DropTable(
                 name: "Loja");

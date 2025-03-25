@@ -9,6 +9,7 @@ namespace CasaColombo.Domain.Interfaces.Repositories.IProdOcorrFornLojas
 {
     public interface IProdutoFaltaRepository : IBaseRepository<ProdutoFalta, int>    
     {
+        
         List<ProdutoFalta> GetAll(bool ativo);
     }
 }

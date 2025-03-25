@@ -93,14 +93,16 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
         {
             try
             {
-                
-                var result = _mapper.Map<ProdutoFaltaGetModel>(_produtoFaltaDomainService.ObterPorId(id));
+                var produto = _produtoFaltaDomainService.ObterPorId(id);
+
+                var result = _mapper.Map<ProdutoFaltaGetModel>(produto);
+
                 return Ok(result);
             }
             catch (ApplicationException e)
             {
                 //HTTP 400 (BAD REQUEST)
-                return StatusCode(400, new { e.Message });
+                return StatusCode(400, new { Message = "Produto de " + id + "se encontra inativo para exibição" });
             }
             catch (Exception e)
             {
@@ -110,6 +112,7 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
         }
 
         [HttpPost("cadastrar")]
+        [ProducesResponseType(typeof(ProdutoFaltaGetModel), 201)]
         public async Task<IActionResult> CadastrarProduto(string matricula, string senha, [FromBody] ProdutoFaltaPostModel model)
         {
             try
@@ -125,8 +128,10 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
 
                 // 🔹 Passando o nome do usuário corretamente
                 var result = _produtoFaltaDomainService.Cadastrar(produto, nomeUsuario);
+                // Mapear o resultado de volta para o modelo de resposta
+                var produtoFaltaGetModel = _mapper.Map<ProdutoFaltaGetModel>(result);
 
-                return StatusCode(201, new { Message = "Falta de produto cadastrado com sucesso", result });
+                return StatusCode(201, new { Message = "Falta de produto cadastrado com sucesso", produtoFaltaGetModel });
             }
             catch (ApplicationException e)
             {
@@ -146,6 +151,7 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
 
 
         [HttpPut]
+        [ProducesResponseType(typeof(ProdutoFaltaPutModel), 201)]
         public IActionResult PutModel([FromBody] ProdutoFaltaPutModel model)
         {
             try
@@ -182,6 +188,7 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
         }
 
         [HttpDelete]
+
         public IActionResult Delete(int id)
         {
             try
@@ -207,5 +214,48 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
 
 
         }
+
+
+        [HttpPost("confirmar-baixa")]
+        [ProducesResponseType(typeof(BaixaAutProdFaltGetModel), 201)]
+        public async Task<IActionResult> BaixaProdutoFalta(string matricula, string senha, int Id, [FromBody] BaixaAutProdFaltPostModel baixa)
+        {
+
+            try
+            {
+                var (autenticado, nomeUsuario) = await AutenticarUsuario(matricula, senha);
+
+                if (!autenticado)
+                {
+                    return StatusCode(401, new { error = "Matricula ou senha incorreta, tente novamente" });
+                }
+
+                var baixaconfirma = _produtoFaltaDomainService.ConfirmarBaixa(Id, nomeUsuario);
+
+
+                // Mapear o resultado de volta para o modelo de resposta
+                var produtoFaltaGetModel = _mapper.Map<BaixaAutProdFaltGetModel>(baixaconfirma);
+
+                return StatusCode(201, new { Message = "Falta de produto cadastrado com sucesso", produtoFaltaGetModel });
+            }
+            catch (ApplicationException e)
+            {
+                return StatusCode(400, new { e.Message });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { e.Message });
+            }
+        }
+
+        [HttpGet("consultar-baixa")]
+        [ProducesResponseType(typeof(List<BaixaAutProdFaltGetModel>), 200)]
+        public IActionResult ConsultarBaixa()
+        {
+            var baixa = _produtoFaltaDomainService.ConsultarBaixaAll();
+            var result = _mapper.Map<List<BaixaAutProdFaltGetModel>>(baixa);
+            return Ok(result);
+        }
+
     }
 }

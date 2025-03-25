@@ -64,6 +64,7 @@ namespace CasaColombo.Services.Extensions
             services.AddTransient<IProdutoAllRepository, ProdutoAllRepository>();
             services.AddTransient<IProdutoFaltaRepository, ProdutoFaltaRepository>();
             services.AddTransient<IProdutoFaltaDomainService, ProdutoFaltaDomainService>();
+            services.AddTransient<IBaixaAutProdFaltRepository, BaixaAutProdFaltRepository>();
 
         }
     }

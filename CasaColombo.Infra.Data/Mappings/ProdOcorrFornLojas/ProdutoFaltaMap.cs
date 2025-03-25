@@ -23,8 +23,8 @@ namespace CasaColombo.Infra.Data.Mappings.ProdOcorrFornLojas
             builder.Property(p => p.Codigo).HasColumnName("CODIGOSISTEMA");
             builder.Property(p => p.CodigoFornecedor).HasColumnName("CODIGOFORNECEDOR");
 
-            builder.Property(p => p.loja).HasColumnName("LOJA");
-            builder.Property(p => p.observacao).HasColumnName("OBSERVACAO").IsRequired();
+            builder.Property(p => p.Loja).HasColumnName("LOJA");
+            builder.Property(p => p.Observacao).HasColumnName("OBSERVACAO").IsRequired();
             builder.Property(p => p.DataHoraCadastro).HasColumnName("DATAHORACADASTRO").IsRequired();
 
             builder.Property(p => p.DataHoraAlteracao).HasColumnName("DATAHORAALTERACAO").IsRequired();
@@ -33,6 +33,13 @@ namespace CasaColombo.Infra.Data.Mappings.ProdOcorrFornLojas
             builder.Property(p => p.LojaId).HasColumnName("LOJAID").IsRequired();
             builder.Property(p => p.ProdutoAllId).HasColumnName("PRODUTOALLID").IsRequired();
             builder.Property(p => p.Usuario).HasColumnName("USUARIO");
+            builder.Property(p => p.DataSolicitacao).HasColumnName("DATASOLICITACAO");
+            builder.Property(p => p.Fornecedor1).HasColumnName("FORNECEDOR1");
+            builder.Property(p => p.Valor1).HasColumnName("VALOR1");
+            builder.Property(p => p.Fornecedor2).HasColumnName("FORNECEDOR2");
+            builder.Property(p => p.Valor2).HasColumnName("VALOR2");
+            builder.Property(p => p.UsuarioAutorizador).HasColumnName("USUARIOAUTORIZADOR");
+
 
             builder.HasOne(p => p.LojaNavigation) 
                .WithMany(c => c.ProdutoFalta) 

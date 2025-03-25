@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CasaColombo.Infra.Data.Migrations.DataContextSecundariaMigrations
 {
     [DbContext(typeof(DataContextSecundaria))]
-    [Migration("20250312191541_initial2")]
+    [Migration("20250317192622_initial2")]
     partial class initial2
     {
         /// <inheritdoc />

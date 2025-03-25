@@ -13,13 +13,16 @@ namespace CasaColombo.Domain.Services.ProdOcorrFornLojas
     {
         private readonly IProdutoFaltaRepository _produtoFaltaRepository;
         private readonly IProdutoAllRepository _produtoAllRepository;
+        private readonly IBaixaAutProdFaltRepository _BaixaAutProdFaltRepository;
         private readonly ILojaRepository _lojaRepository;
 
-        public ProdutoFaltaDomainService(IProdutoFaltaRepository produtoFaltaRepository, IProdutoAllRepository produtoAllRepository, ILojaRepository lojaRepository)
+        public ProdutoFaltaDomainService(IProdutoFaltaRepository produtoFaltaRepository, IProdutoAllRepository produtoAllRepository, ILojaRepository lojaRepository
+            , IBaixaAutProdFaltRepository baixaAutProdFaltRepository)
         {
             _produtoFaltaRepository = produtoFaltaRepository;
             _produtoAllRepository = produtoAllRepository;
             _lojaRepository = lojaRepository;
+            _BaixaAutProdFaltRepository = baixaAutProdFaltRepository;
         }
 
         public ProdutoFalta Atualizar(ProdutoFalta produtoFalta)
@@ -27,13 +30,58 @@ namespace CasaColombo.Domain.Services.ProdOcorrFornLojas
            var  registro = ObterPorId(produtoFalta.Id.Value);
             if (registro != null)
                 throw new ArgumentException("Produto não encontrado para edição");
-            registro.Id = produtoFalta.Id;
-            registro.NomeProduto = produtoFalta.NomeProduto;
+            registro.Id = registro.Id;
+            registro.NomeProduto = registro.NomeProduto;
             registro.CodigoFornecedor = produtoFalta.CodigoFornecedor;
-            registro.Codigo = produtoFalta.Codigo;
+            registro.Codigo = registro.Codigo;
             registro.DataHoraAlteracao = DateTime.Now;
+            registro.DataSolicitacao = produtoFalta.DataSolicitacao;
+            registro.Fornecedor1 = produtoFalta.Fornecedor1;
+            registro.Valor1 = produtoFalta.Valor1;
+            registro.Fornecedor2 = produtoFalta.Fornecedor2;
+            registro.Valor2 = produtoFalta.Valor2;
+            registro.Observacao = produtoFalta.Observacao;
+            registro.Loja = registro.Loja;
+            registro.Usuario = registro.Usuario;
+            registro.UsuarioAutorizador = produtoFalta.UsuarioAutorizador;
             _produtoFaltaRepository.Update(registro);
             return registro;
+        }
+
+        public BaixaAutProdFalt ConfirmarBaixa(int id, string nomeUsuario)
+        {
+            var produtoFalta = ObterPorId(id);
+            if (produtoFalta == null)
+            {
+                throw new ApplicationException("Lote não encontrado.");
+            }
+          var baixa = new BaixaAutProdFalt
+          {
+              ProdutoFaltaId = produtoFalta.Id.Value,
+              DataHoraBaixa = DateTime.Now,
+              Usuario = produtoFalta.Usuario,
+              Valor1 = produtoFalta.Valor1,
+              Valor2 = produtoFalta.Valor2,
+              Fornecedor1 = produtoFalta.Fornecedor1,
+              Fornecedor2 = produtoFalta.Fornecedor2,
+              UsuarioAutorizador = produtoFalta.UsuarioAutorizador,
+              Codigo = produtoFalta.Codigo,
+              CodigoFornecedor = produtoFalta.CodigoFornecedor,
+              DataSolicitacao = produtoFalta.DataSolicitacao,
+              Loja = produtoFalta.Loja,
+              NomeProduto = produtoFalta.NomeProduto,
+              Observacao = produtoFalta.Observacao,
+              UsuarioBaixa = nomeUsuario
+
+
+
+          };
+
+            _BaixaAutProdFaltRepository.Add(baixa);
+            produtoFalta.Ativo = false;
+            _produtoFaltaRepository.Update(produtoFalta);
+
+            return baixa;
         }
 
         public ProdutoFalta Cadastrar(ProdutoFalta produtoFalta, string nomeUsuario)
@@ -49,7 +97,7 @@ namespace CasaColombo.Domain.Services.ProdOcorrFornLojas
             produtoFalta.NomeProduto = produtoAll.NomeProduto;
             produtoFalta.Codigo = produtoAll.Codigo;
             produtoFalta.CodigoFornecedor = produtoAll.CodigoFornecedor;
-            produtoFalta.loja = loja.Nome;
+            produtoFalta.Loja = loja.Nome;
             produtoFalta.DataHoraCadastro = DateTime.Now;
             produtoFalta.Ativo = true;
 
@@ -70,7 +118,7 @@ namespace CasaColombo.Domain.Services.ProdOcorrFornLojas
             var produtoFalta = _produtoFaltaRepository?.GetAll(true);
             if (produtoFalta == null)
                 throw new ArgumentNullException("Nenhum produto encontrado para consulta");
-            return _produtoFaltaRepository.GetAll(true);
+            return produtoFalta.Where(p =>p.Ativo).ToList();
         }
 
         public ProdutoFalta Delete(int id)
@@ -86,7 +134,32 @@ namespace CasaColombo.Domain.Services.ProdOcorrFornLojas
 
         public ProdutoFalta ObterPorId(int id)
         {
-            return _produtoFaltaRepository.GetById(id);
+            var produto = _produtoFaltaRepository.GetById(id);
+
+            if (produto == null || !produto.Ativo)
+            {
+                throw new ApplicationException("Produto não encontrado ou inativo.");
+            }
+
+            return produto;
+        }
+
+        public BaixaAutProdFalt ConsultarPorId(int id)
+        {
+
+            var baixa = _BaixaAutProdFaltRepository.GetById(id);
+            if (baixa == null)
+                throw new ArgumentException("Baixa não encontrada");
+            return baixa;
+        }
+
+        public List<BaixaAutProdFalt> ConsultarBaixaAll()
+        {
+
+            var baixa = _BaixaAutProdFaltRepository.GetAll();
+            if (baixa == null)
+                throw new ArgumentException("Baixa não encontrada");
+            return baixa;
         }
     }
 }

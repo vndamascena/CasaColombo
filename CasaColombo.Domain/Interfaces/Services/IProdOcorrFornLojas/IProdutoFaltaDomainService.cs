@@ -13,7 +13,9 @@ namespace CasaColombo.Domain.Interfaces.Services.IProdOcorrFornLojas
         ProdutoFalta Atualizar(ProdutoFalta produtoFalta);
         ProdutoFalta Delete(int id);
         ProdutoFalta ObterPorId(int id);
-
+        BaixaAutProdFalt ConfirmarBaixa(int id, string momeUsuario);
+        BaixaAutProdFalt ConsultarPorId(int id);
+        List<BaixaAutProdFalt> ConsultarBaixaAll();
         List<ProdutoFalta> Consultar();
     }
 }
