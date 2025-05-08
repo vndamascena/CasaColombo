@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CasaColombo.Infra.Data.Migrations.DataContextSecundariaMigrations
 {
     [DbContext(typeof(DataContextSecundaria))]
-    [Migration("20250317192622_initial2")]
-    partial class initial2
+    [Migration("20250424135620_NomeDaMigration2")]
+    partial class NomeDaMigration2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

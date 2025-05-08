@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CasaColombo.Infra.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250317192548_initial")]
-    partial class initial
+    [Migration("20250424135554_NomeDaMigration")]
+    partial class NomeDaMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -276,8 +276,12 @@ namespace CasaColombo.Infra.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Codigo")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<bool>("CLRecebido")
+                        .HasColumnType("bit")
+                        .HasColumnName("CLRECEBIDO");
+
+                    b.Property<int?>("Codigo")
+                        .HasColumnType("int")
                         .HasColumnName("CODIGO");
 
                     b.Property<string>("CodigoFornecedor")
@@ -288,21 +292,41 @@ namespace CasaColombo.Infra.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DATAHORABAIXA");
 
-                    b.Property<string>("DataSolicitacao")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<DateTime>("DataHoraCadastro")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DATAHORACADASTRO");
+
+                    b.Property<DateTime?>("DataSolicitacao")
+                        .HasColumnType("datetime2")
                         .HasColumnName("DATASOLICITACAO");
 
-                    b.Property<string>("Fornecedor1")
+                    b.Property<string>("Fornecedor")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("FORNECEDOR1");
+                        .HasColumnName("FORNECEDOR");
 
-                    b.Property<string>("Fornecedor2")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("FORNECEDOR2");
+                    b.Property<bool>("JC1Recebido")
+                        .HasColumnType("bit")
+                        .HasColumnName("JC1RECEBIDO");
+
+                    b.Property<bool>("JC2Recebido")
+                        .HasColumnType("bit")
+                        .HasColumnName("JC2RECEBIDO");
 
                     b.Property<string>("Loja")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("LOJA");
+
+                    b.Property<string>("Loja2")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LOJA2");
+
+                    b.Property<string>("Loja3")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LOJA3");
+
+                    b.Property<string>("Loja4")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LOJA4");
 
                     b.Property<string>("NomeProduto")
                         .IsRequired()
@@ -318,6 +342,10 @@ namespace CasaColombo.Infra.Data.Migrations
                     b.Property<int>("ProdutoFaltaId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Quantidade")
+                        .HasColumnType("int")
+                        .HasColumnName("QUANTIDADE");
+
                     b.Property<string>("Usuario")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("USUARIO");
@@ -330,13 +358,13 @@ namespace CasaColombo.Infra.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("USUARIOBAIXA");
 
-                    b.Property<string>("Valor1")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("VALOR1");
+                    b.Property<bool>("VARecebido")
+                        .HasColumnType("bit")
+                        .HasColumnName("VARECEBIDO");
 
-                    b.Property<string>("Valor2")
+                    b.Property<string>("Valor")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("VALOR2");
+                        .HasColumnName("VALOR");
 
                     b.HasKey("Id");
 
@@ -374,6 +402,67 @@ namespace CasaColombo.Infra.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("CATEGORIA", (string)null);
+                });
+
+            modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.FornecProdFalt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("Codigo")
+                        .HasColumnType("int")
+                        .HasColumnName("CODIGONUMERO");
+
+                    b.Property<DateTime?>("DataEntrada")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DATAENTRADA");
+
+                    b.Property<DateTime>("DataHoraAutorizacao")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DATAHORAALTERACAO");
+
+                    b.Property<int>("FornecedorGeralId")
+                        .HasColumnType("int")
+                        .HasColumnName("FORNECEDORID");
+
+                    b.Property<string>("Nome")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("NOME");
+
+                    b.Property<string>("NomeProduto")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("NOMEPRODUTO");
+
+                    b.Property<int?>("ProdutoFaltaId")
+                        .HasColumnType("int")
+                        .HasColumnName("ProdutoFaltaId");
+
+                    b.Property<int?>("Quantidade")
+                        .HasColumnType("int")
+                        .HasColumnName("QUANTIDADE");
+
+                    b.Property<string>("UsuarioAutorizador")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("USUARIOAUTORIZADOR");
+
+                    b.Property<string>("Valor")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("VALOR");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FornecedorGeralId");
+
+                    b.HasIndex("ProdutoFaltaId");
+
+                    b.ToTable("FORNECPRODFALT", (string)null);
                 });
 
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.Lote", b =>
@@ -458,8 +547,8 @@ namespace CasaColombo.Infra.Data.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("ATIVO");
 
-                    b.Property<string>("Codigo")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int>("Codigo")
+                        .HasColumnType("int")
                         .HasColumnName("CODIGOSISTEMA");
 
                     b.Property<string>("CodigoFornecedor")
@@ -481,6 +570,9 @@ namespace CasaColombo.Infra.Data.Migrations
                         .HasColumnName("NOME");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Codigo")
+                        .IsUnique();
 
                     b.ToTable("PRODUTOALL", (string)null);
                 });
@@ -568,37 +660,49 @@ namespace CasaColombo.Infra.Data.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("ATIVO");
 
-                    b.Property<string>("Codigo")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<bool>("CLRecebido")
+                        .HasColumnType("bit")
+                        .HasColumnName("CLRECEBIDO");
+
+                    b.Property<int?>("Codigo")
+                        .HasColumnType("int")
                         .HasColumnName("CODIGOSISTEMA");
 
                     b.Property<string>("CodigoFornecedor")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("CODIGOFORNECEDOR");
 
-                    b.Property<DateTime>("DataHoraAlteracao")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("DATAHORAALTERACAO");
-
                     b.Property<DateTime>("DataHoraCadastro")
                         .HasColumnType("datetime2")
                         .HasColumnName("DATAHORACADASTRO");
 
-                    b.Property<string>("DataSolicitacao")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<DateTime?>("DataSolicitacao")
+                        .HasColumnType("datetime2")
                         .HasColumnName("DATASOLICITACAO");
 
-                    b.Property<string>("Fornecedor1")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("FORNECEDOR1");
+                    b.Property<bool>("JC1Recebido")
+                        .HasColumnType("bit")
+                        .HasColumnName("JC1RECEBIDO");
 
-                    b.Property<string>("Fornecedor2")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("FORNECEDOR2");
+                    b.Property<bool>("JC2Recebido")
+                        .HasColumnType("bit")
+                        .HasColumnName("JC2RECEBIDO");
 
                     b.Property<string>("Loja")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("LOJA");
+
+                    b.Property<string>("Loja2")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LOJA2");
+
+                    b.Property<string>("Loja3")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LOJA3");
+
+                    b.Property<string>("Loja4")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LOJA4");
 
                     b.Property<int>("LojaId")
                         .HasColumnType("int")
@@ -615,31 +719,19 @@ namespace CasaColombo.Infra.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("OBSERVACAO");
 
-                    b.Property<int>("ProdutoAllId")
-                        .HasColumnType("int")
-                        .HasColumnName("PRODUTOALLID");
-
                     b.Property<string>("Usuario")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("USUARIO");
 
-                    b.Property<string>("UsuarioAutorizador")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("USUARIOAUTORIZADOR");
-
-                    b.Property<string>("Valor1")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("VALOR1");
-
-                    b.Property<string>("Valor2")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("VALOR2");
+                    b.Property<bool>("VARecebido")
+                        .HasColumnType("bit")
+                        .HasColumnName("VARECEBIDO");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LojaId");
+                    b.HasIndex("Codigo");
 
-                    b.HasIndex("ProdutoAllId");
+                    b.HasIndex("LojaId");
 
                     b.ToTable("PRODUTOFALTA", (string)null);
                 });
@@ -966,6 +1058,24 @@ namespace CasaColombo.Infra.Data.Migrations
                     b.Navigation("ProdutoFalta");
                 });
 
+            modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.FornecProdFalt", b =>
+                {
+                    b.HasOne("CasaColombo.Domain.Entities.Fornecedores.FornecedorGeral", "Fornecedor")
+                        .WithMany("FornecProdFalt")
+                        .HasForeignKey("FornecedorGeralId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CasaColombo.Domain.Entities.Produtos.ProdutoFalta", "ProdutoFalta")
+                        .WithMany("FornecProdFalt")
+                        .HasForeignKey("ProdutoFaltaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Fornecedor");
+
+                    b.Navigation("ProdutoFalta");
+                });
+
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.Lote", b =>
                 {
                     b.HasOne("CasaColombo.Domain.Entities.Produtos.ProdutoPiso", "ProdutoPiso")
@@ -998,15 +1108,15 @@ namespace CasaColombo.Infra.Data.Migrations
 
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoFalta", b =>
                 {
+                    b.HasOne("CasaColombo.Domain.Entities.Produtos.ProdutoAll", "ProdutoAllNavigation")
+                        .WithMany("ProdutoFalta")
+                        .HasForeignKey("Codigo")
+                        .HasPrincipalKey("Codigo")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("CasaColombo.Domain.Entities.Lojas.Loja", "LojaNavigation")
                         .WithMany("ProdutoFalta")
                         .HasForeignKey("LojaId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("CasaColombo.Domain.Entities.Produtos.ProdutoAll", "ProdutoAllNavigation")
-                        .WithMany("ProdutoFalta")
-                        .HasForeignKey("ProdutoAllId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1100,6 +1210,8 @@ namespace CasaColombo.Infra.Data.Migrations
 
             modelBuilder.Entity("CasaColombo.Domain.Entities.Fornecedores.FornecedorGeral", b =>
                 {
+                    b.Navigation("FornecProdFalt");
+
                     b.Navigation("Ocorrencia");
 
                     b.Navigation("ProdutosGeral");
@@ -1149,6 +1261,8 @@ namespace CasaColombo.Infra.Data.Migrations
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoFalta", b =>
                 {
                     b.Navigation("BaixaAutProdFalt");
+
+                    b.Navigation("FornecProdFalt");
                 });
 
             modelBuilder.Entity("CasaColombo.Domain.Entities.Produtos.ProdutoGeral", b =>

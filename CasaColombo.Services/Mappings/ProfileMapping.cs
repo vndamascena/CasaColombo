@@ -271,11 +271,18 @@ namespace CasaColombo.Services.Mappings
             CreateMap<ProdutoAllPostModel, ProdutoAll>();
             CreateMap<ProdutoAll, ProdutoAllPostModel>();
             CreateMap<ProdutoFalta, ProdutoFaltaGetModel>();
+
+
             CreateMap<ProdutoFaltaGetModel, ProdutoFalta>();
+
             CreateMap<ProdutoFaltaPutModel, ProdutoFalta>();
             CreateMap<ProdutoFalta, ProdutoFaltaPutModel>();
+
             CreateMap<ProdutoFaltaPostModel, ProdutoFalta>();
+
+
             CreateMap<ProdutoFalta, ProdutoFaltaPostModel>();
+
             CreateMap<BaixaAutProdFalt, BaixaAutProdFaltGetModel>();
             CreateMap<BaixaAutProdFaltGetModel, BaixaAutProdFalt>();
             CreateMap<BaixaAutProdFaltPostModel, BaixaAutProdFalt>();
@@ -284,8 +291,22 @@ namespace CasaColombo.Services.Mappings
             CreateMap<BaixaAutProdFaltGetModel, ProdutoFalta>();
             CreateMap<ProdutoFalta, BaixaAutProdFaltPostModel>();
             CreateMap<BaixaAutProdFaltPostModel, ProdutoFalta>();
+            CreateMap<FornecProdFaltPostModel, FornecProdFalt>();
 
-    
+            CreateMap<FornecProdFalt, FornecProdFaltPutModel>();
+            CreateMap<FornecProdFaltPutModel, FornecProdFalt>();
+
+            CreateMap<FornecProdFalt, FornecProdFaltPostModel>();
+
+            CreateMap<FornecProdFalt, FornecProdFaltGetModel>();
+            CreateMap<FornecProdFaltGetModel, FornecProdFaltPostModel>();
+
+
+            CreateMap<FornecProdFaltGetModel, FornecProdFalt>();
+               
+
+
+
 
         }
 

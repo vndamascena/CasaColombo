@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CasaColombo.Infra.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class NomeDaMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,7 +81,7 @@ namespace CasaColombo.Infra.Data.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NOME = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CODIGOSISTEMA = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CODIGOSISTEMA = table.Column<int>(type: "int", nullable: false),
                     CODIGOFORNECEDOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DATAHORACADASTRO = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DATAHORAALTERACAO = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -90,6 +90,7 @@ namespace CasaColombo.Infra.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PRODUTOALL", x => x.ID);
+                    table.UniqueConstraint("AK_PRODUTOALL_CODIGOSISTEMA", x => x.CODIGOSISTEMA);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,22 +193,22 @@ namespace CasaColombo.Infra.Data.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NOME = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CODIGOSISTEMA = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CODIGOSISTEMA = table.Column<int>(type: "int", nullable: true),
                     CODIGOFORNECEDOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LOJA = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LOJA2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LOJA3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LOJA4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OBSERVACAO = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DATAHORACADASTRO = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DATAHORAALTERACAO = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    JC1RECEBIDO = table.Column<bool>(type: "bit", nullable: false),
+                    JC2RECEBIDO = table.Column<bool>(type: "bit", nullable: false),
+                    VARECEBIDO = table.Column<bool>(type: "bit", nullable: false),
+                    CLRECEBIDO = table.Column<bool>(type: "bit", nullable: false),
                     ATIVO = table.Column<bool>(type: "bit", nullable: false),
-                    PRODUTOALLID = table.Column<int>(type: "int", nullable: false),
                     LOJAID = table.Column<int>(type: "int", nullable: false),
                     USUARIO = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    USUARIOAUTORIZADOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DATASOLICITACAO = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FORNECEDOR1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VALOR1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FORNECEDOR2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VALOR2 = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    DATASOLICITACAO = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -219,10 +220,10 @@ namespace CasaColombo.Infra.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_PRODUTOFALTA_PRODUTOALL_PRODUTOALLID",
-                        column: x => x.PRODUTOALLID,
+                        name: "FK_PRODUTOFALTA_PRODUTOALL_CODIGOSISTEMA",
+                        column: x => x.CODIGOSISTEMA,
                         principalTable: "PRODUTOALL",
-                        principalColumn: "ID",
+                        principalColumn: "CODIGOSISTEMA",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -339,20 +340,27 @@ namespace CasaColombo.Infra.Data.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NOMEPRODUTO = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    CODIGO = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CODIGO = table.Column<int>(type: "int", nullable: true),
                     CODIGOFORNECEDOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProdutoFaltaId = table.Column<int>(type: "int", nullable: false),
                     LOJA = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LOJA2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LOJA3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LOJA4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DATAHORACADASTRO = table.Column<DateTime>(type: "datetime2", nullable: false),
                     OBSERVACAO = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DATASOLICITACAO = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FORNECEDOR1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VALOR1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FORNECEDOR2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VALOR2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FORNECEDOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JC1RECEBIDO = table.Column<bool>(type: "bit", nullable: false),
+                    JC2RECEBIDO = table.Column<bool>(type: "bit", nullable: false),
+                    VARECEBIDO = table.Column<bool>(type: "bit", nullable: false),
+                    CLRECEBIDO = table.Column<bool>(type: "bit", nullable: false),
+                    VALOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DATASOLICITACAO = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DATAHORABAIXA = table.Column<DateTime>(type: "datetime2", nullable: false),
                     USUARIO = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     USUARIOAUTORIZADOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    USUARIOBAIXA = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    USUARIOBAIXA = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QUANTIDADE = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -363,6 +371,40 @@ namespace CasaColombo.Infra.Data.Migrations
                         principalTable: "PRODUTOFALTA",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FORNECPRODFALT",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NOMEPRODUTO = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    NOME = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    VALOR = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    QUANTIDADE = table.Column<int>(type: "int", nullable: true),
+                    DATAENTRADA = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CODIGONUMERO = table.Column<int>(type: "int", nullable: true),
+                    FORNECEDORID = table.Column<int>(type: "int", nullable: false),
+                    USUARIOAUTORIZADOR = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DATAHORAALTERACAO = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProdutoFaltaId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FORNECPRODFALT", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_FORNECPRODFALT_FORNECEDORGERAL_FORNECEDORID",
+                        column: x => x.FORNECEDORID,
+                        principalTable: "FORNECEDORGERAL",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FORNECPRODFALT_PRODUTOFALTA_ProdutoFaltaId",
+                        column: x => x.ProdutoFaltaId,
+                        principalTable: "PRODUTOFALTA",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -487,6 +529,16 @@ namespace CasaColombo.Infra.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_FORNECPRODFALT_FORNECEDORID",
+                table: "FORNECPRODFALT",
+                column: "FORNECEDORID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FORNECPRODFALT_ProdutoFaltaId",
+                table: "FORNECPRODFALT",
+                column: "ProdutoFaltaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HISTORICOVENDA_LOTEID",
                 table: "HISTORICOVENDA",
                 column: "LOTEID");
@@ -517,6 +569,12 @@ namespace CasaColombo.Infra.Data.Migrations
                 column: "TIPOOCORRENCIA");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PRODUTOALL_CODIGOSISTEMA",
+                table: "PRODUTOALL",
+                column: "CODIGOSISTEMA",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PRODUTODEPOSITO_DEPOSITOIID",
                 table: "PRODUTODEPOSITO",
                 column: "DEPOSITOIID");
@@ -527,14 +585,14 @@ namespace CasaColombo.Infra.Data.Migrations
                 column: "PRODUTOGERALID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PRODUTOFALTA_CODIGOSISTEMA",
+                table: "PRODUTOFALTA",
+                column: "CODIGOSISTEMA");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PRODUTOFALTA_LOJAID",
                 table: "PRODUTOFALTA",
                 column: "LOJAID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PRODUTOFALTA_PRODUTOALLID",
-                table: "PRODUTOFALTA",
-                column: "PRODUTOALLID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PRODUTOGERAL_IDCATEGORIA",
@@ -582,16 +640,19 @@ namespace CasaColombo.Infra.Data.Migrations
                 name: "BAIXAOCORRENCIA");
 
             migrationBuilder.DropTable(
+                name: "FORNECPRODFALT");
+
+            migrationBuilder.DropTable(
                 name: "HISTORICOVENDA");
 
             migrationBuilder.DropTable(
                 name: "VENDAPRODUTOGERAL");
 
             migrationBuilder.DropTable(
-                name: "PRODUTOFALTA");
+                name: "OCORRENCIA");
 
             migrationBuilder.DropTable(
-                name: "OCORRENCIA");
+                name: "PRODUTOFALTA");
 
             migrationBuilder.DropTable(
                 name: "LOTE");
@@ -600,13 +661,13 @@ namespace CasaColombo.Infra.Data.Migrations
                 name: "PRODUTODEPOSITO");
 
             migrationBuilder.DropTable(
-                name: "PRODUTOALL");
+                name: "TIPOOCORRENCIA ");
 
             migrationBuilder.DropTable(
                 name: "Loja");
 
             migrationBuilder.DropTable(
-                name: "TIPOOCORRENCIA ");
+                name: "PRODUTOALL");
 
             migrationBuilder.DropTable(
                 name: "PRODUTOPISO");

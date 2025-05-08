@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text;
+using Microsoft.AspNetCore.Http.HttpResults;
+using CasaColombo.Domain.Interfaces.Repositories.IProdOcorrFornLojas;
 
 namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
 {
@@ -14,12 +16,15 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
     public class ProdutoFaltaController : ControllerBase
     {
         private readonly IProdutoFaltaDomainService _produtoFaltaDomainService;
+        private readonly IFornecProdFaltRepository _fornecProdFaltRepository;
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
 
-        public ProdutoFaltaController(IProdutoFaltaDomainService produtoFaltaDomainService, IMapper mapper, IHttpClientFactory httpClientFactory)
+        public ProdutoFaltaController(IProdutoFaltaDomainService produtoFaltaDomainService, IMapper mapper, IHttpClientFactory httpClientFactory,
+            IFornecProdFaltRepository fornecProdFaltRepository)
         {
             _produtoFaltaDomainService = produtoFaltaDomainService;
+            _fornecProdFaltRepository = fornecProdFaltRepository;
             _mapper = mapper;
             _httpClient = httpClientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri("http://colombo01-001-site2.gtempurl.com/usuarios/autenticar");
@@ -32,9 +37,19 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
         [ProducesResponseType(typeof(List<ProdutoFaltaGetModel>), 200)]
         public IActionResult GetAll()
         {
-            var produtos = _produtoFaltaDomainService.Consultar();
-            var result = _mapper.Map<List<ProdutoFaltaGetModel>>(produtos);
-            return Ok(result);
+            try
+            {
+                var produtos = _produtoFaltaDomainService.Consultar();
+                var produtosFaltaModel = _mapper.Map<List<ProdutoFaltaGetModel>>(produtos, opt => opt.Items["IncludeFornecProdFalt"] = true);
+                return Ok(produtosFaltaModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { e.Message });
+            }
+
+           
+            
         }
 
 
@@ -71,7 +86,48 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
                 return (false, null);
             }
         }
+        private async Task<(bool, string)> IsUserAuthorized(string matricula, string senha)
+        {
+            Dictionary<string, string> usuariosAutorizados = new Dictionary<string, string>
+    {
+        { "65", "1723" },
+        { "1", "5555" },
+        { "3", "1601" },
+        { "2", "1470" },
+    };
 
+            if (usuariosAutorizados.ContainsKey(matricula) && usuariosAutorizados[matricula] == senha)
+            {
+                try
+                {
+                    var usuarioModel = new { Matricula = matricula, Senha = senha };
+                    var json = JsonSerializer.Serialize(usuarioModel);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await _httpClient.PostAsync("/api/usuarios/autenticar", content);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return (false, null);
+                    }
+
+                    var usuario = JsonSerializer.Deserialize<UsuarioResponse>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    return (true, usuario?.Nome);
+                }
+                catch
+                {
+                    return (false, null);
+                }
+            }
+            else
+            {
+                return (false, null);
+            }
+        }
 
 
 
@@ -93,16 +149,17 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
         {
             try
             {
-                var produto = _produtoFaltaDomainService.ObterPorId(id);
+                var produtos = _produtoFaltaDomainService.ProdutoObterPorId(id);
 
-                var result = _mapper.Map<ProdutoFaltaGetModel>(produto);
+                var produtosFaltaModel = _mapper.Map<ProdutoFaltaGetModel>(produtos);
+                return Ok(produtosFaltaModel);
 
-                return Ok(result);
+               
             }
             catch (ApplicationException e)
             {
                 //HTTP 400 (BAD REQUEST)
-                return StatusCode(400, new { Message = "Produto de " + id + "se encontra inativo para exibição" });
+                return StatusCode(400, new { Message = "Produto de " + id + " se encontra inativo para exibição" });
             }
             catch (Exception e)
             {
@@ -110,6 +167,55 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
                 return StatusCode(500, new { e.Message });
             }
         }
+
+        [HttpGet("fornecedorProduto")]
+        [ProducesResponseType(typeof(FornecProdFaltGetModel), 200)]
+        public IActionResult GetFornecProdFaltAll()
+        {
+            try
+            {
+                var fornecProdFalt = _fornecProdFaltRepository.GetAll();
+               
+                var result = _mapper.Map<List<FornecProdFaltGetModel>>(fornecProdFalt);
+               
+                return Ok(result);
+            }
+            catch (ApplicationException e)
+            {
+                //HTTP 400 (BAD REQUEST)
+                return StatusCode(400, new { e.Message });
+            }
+            catch (Exception e)
+            {
+                //HTTP 500 (INTERNAL SERVER ERROR)
+                return StatusCode(500, new { e.Message });
+            }
+        }
+
+        [HttpGet("{id}/fornecedorProduto")]
+        [ProducesResponseType(typeof(FornecProdFaltGetModel), 200)]
+        public IActionResult GetFornecProdFalt(int id)
+        {
+            try
+            {
+                var fornec = _produtoFaltaDomainService.ConsultarFornecAll(id);
+                var result = _mapper.Map<List<FornecProdFaltGetModel>>(fornec);
+                return Ok(result);
+            }
+            catch (ApplicationException e)
+            {
+                //HTTP 400 (BAD REQUEST)
+                return StatusCode(400, new { e.Message });
+            }
+            catch (Exception e)
+            {
+                //HTTP 500 (INTERNAL SERVER ERROR)
+                return StatusCode(500, new { e.Message });
+            }
+        }
+
+
+
 
         [HttpPost("cadastrar")]
         [ProducesResponseType(typeof(ProdutoFaltaGetModel), 201)]
@@ -125,9 +231,10 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
                 }
 
                 var produto = _mapper.Map<ProdutoFalta>(model);
+                
 
                 // 🔹 Passando o nome do usuário corretamente
-                var result = _produtoFaltaDomainService.Cadastrar(produto, nomeUsuario);
+                var result = _produtoFaltaDomainService.Cadastrar(produto ,nomeUsuario);
                 // Mapear o resultado de volta para o modelo de resposta
                 var produtoFaltaGetModel = _mapper.Map<ProdutoFaltaGetModel>(result);
 
@@ -145,30 +252,161 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
 
 
 
-
+        [HttpPost("fornecedorProduto")]
+        [ProducesResponseType(typeof(FornecProdFaltPostModel), 201)]
+        public IActionResult CadastrarFornecedorProduto([FromBody] FornecProdFaltPostModel model)
+        {
+            try
+            {
+               var forneceProdFalt = _mapper.Map<FornecProdFalt>(model);
+                var result = _produtoFaltaDomainService.CadastrarFornec(forneceProdFalt);
+                return StatusCode(201, new
+                {
+                    Message = "Fornecedor de produto cadastrado com sucesso",
+                    result
+                });
+            }
+            catch (ApplicationException e)
+            {
+                //HTTP 400 (BAD REQUEST)
+                return StatusCode(400, new { e.Message });
+            }
+            catch (Exception e)
+            {
+                //HTTP 500 (INTERNAL SERVER ERROR)
+                return StatusCode(500, new { e.Message });
+            }
+        }
 
 
 
 
         [HttpPut]
         [ProducesResponseType(typeof(ProdutoFaltaPutModel), 201)]
-        public IActionResult PutModel([FromBody] ProdutoFaltaPutModel model)
+        public async Task<IActionResult> PutModel(string matricula, string senha, [FromBody] ProdutoFaltaPutModel model)
         {
             try
             {
+
+
+                var (autenticado, nomeUsuario) = await IsUserAuthorized(matricula, senha);
+
+                if (!autenticado)
+                {
+                    return StatusCode(401, new { error = "Matricula ou senha incorreta, tente novamente" });
+                }
+
+
                 if (model == null)
                 {
                     return BadRequest("O produto nao pode ser nulo.");
                 }
-                var produto = new ProdutoFalta
+                var produtoFalta = _mapper.Map<ProdutoFalta>(model);
+                var result = _produtoFaltaDomainService.Atualizar(produtoFalta);
+                return StatusCode(201, new
                 {
-                    Id = model.Id,
-                    NomeProduto = model.NomeProduto,
-                    CodigoFornecedor = model.CodigoFornecedor,
-                    Codigo = model.Codigo,
-                    DataHoraAlteracao = DateTime.Now
-                };
-                var result = _produtoFaltaDomainService.Atualizar(produto);
+                    Message = "Falta de produto atualizado com sucesso",
+                    result
+                }); ;
+            }
+            catch (ApplicationException e)
+            {
+                //HTTP 400 (BAD REQUEST)
+                return StatusCode(400, new { e.Message });
+            }
+            catch (Exception e)
+            {
+                //HTTP 500 (INTERNAL SERVER ERROR)
+                return StatusCode(500, new { e.Message });
+            }
+        }
+        [HttpPut("chegouCor")]
+        [ProducesResponseType(typeof(ProdutoFaltaPutModel), 201)]
+        public async Task<IActionResult> PutModelChegouCor( [FromBody] ProdutoFaltaPutModel model)
+        {
+            try
+            {
+              
+
+
+                if (model == null)
+                {
+                    return BadRequest("O produto nao pode ser nulo.");
+                }
+                var produtoFalta = _mapper.Map<ProdutoFalta>(model);
+                var result = _produtoFaltaDomainService.AtualizarStatusProduto(produtoFalta);
+                return StatusCode(201, new
+                {
+                    Message = "Falta de produto atualizado com sucesso",
+                    result
+                }); ;
+            }
+            catch (ApplicationException e)
+            {
+                //HTTP 400 (BAD REQUEST)
+                return StatusCode(400, new { e.Message });
+            }
+            catch (Exception e)
+            {
+                //HTTP 500 (INTERNAL SERVER ERROR)
+                return StatusCode(500, new { e.Message });
+            }
+        }
+
+        [HttpPut("autorizar")]
+        [ProducesResponseType(typeof(FornecProdFaltPutModel), 201)]
+        public async Task<IActionResult> PutModelAutorizar(string matricula, string senha, [FromBody] FornecProdFaltPutModel model)
+        {
+            try
+            {
+
+
+                var (autenticado, nomeUsuario) = await IsUserAuthorized(matricula, senha);
+
+                if (!autenticado)
+                {
+                    return StatusCode(401, new { error = "Matricula ou senha incorreta, tente novamente" });
+                }
+
+
+                if (model == null)
+                {
+                    return BadRequest("O produto nao pode ser nulo.");
+                }
+                var produtoFalta = _mapper.Map<FornecProdFalt>(model);
+                var result = _produtoFaltaDomainService.Autorizar(produtoFalta, nomeUsuario);
+                return StatusCode(201, new
+                {
+                    Message = "Produto autorizado para compra",
+                    result
+                }); ;
+            }
+            catch (ApplicationException e)
+            {
+                //HTTP 400 (BAD REQUEST)
+                return StatusCode(400, new { e.Message });
+            }
+            catch (Exception e)
+            {
+                //HTTP 500 (INTERNAL SERVER ERROR)
+                return StatusCode(500, new { e.Message });
+            }
+        }
+
+
+        [HttpPut("lojas")]
+        [ProducesResponseType(typeof(ProdutoFaltaPutModel), 201)]
+        public async Task<IActionResult> PutModelLojas([FromBody] ProdutoFaltaPutModel model)
+        {
+            try
+            {
+
+                if (model == null)
+                {
+                    return BadRequest("O produto nao pode ser nulo.");
+                }
+                var produtoFalta = _mapper.Map<ProdutoFalta>(model);
+                var result = _produtoFaltaDomainService.AtualizarLoja(produtoFalta);
                 return StatusCode(201, new
                 {
                     Message = "Falta de produto atualizado com sucesso",
@@ -215,6 +453,28 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
 
         }
 
+        [HttpDelete("fornecProdFalt/{fornecProdFaltId}")]
+        public IActionResult delteFornec( int fornecProdFaltId)
+        {
+            try
+            {
+                _produtoFaltaDomainService.ExcluirFornec(fornecProdFaltId);
+                return StatusCode(201, new { Message = "Fornecedor deletado com sucesso" });
+            }
+            catch (ApplicationException e)
+            {
+                //HTTP 400 (BAD REQUEST)
+                return StatusCode(400, new { e.Message });
+            }
+            catch (Exception e)
+            {
+                //HTTP 500 (INTERNAL SERVER ERROR)
+                return StatusCode(500, new { e.Message });
+            }
+        }
+
+
+
 
         [HttpPost("confirmar-baixa")]
         [ProducesResponseType(typeof(BaixaAutProdFaltGetModel), 201)]
@@ -236,7 +496,7 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
                 // Mapear o resultado de volta para o modelo de resposta
                 var produtoFaltaGetModel = _mapper.Map<BaixaAutProdFaltGetModel>(baixaconfirma);
 
-                return StatusCode(201, new { Message = "Falta de produto cadastrado com sucesso", produtoFaltaGetModel });
+                return StatusCode(201, new { Message = "Falta de produto concluido com sucesso", produtoFaltaGetModel });
             }
             catch (ApplicationException e)
             {

@@ -65,9 +65,9 @@ namespace CasaColombo.Domain.Services.ProdOcorrFornLojas
             return produtoAll;
         }
 
-        public ProdutoAll GetByCodigo(string codigo)
+        public ProdutoAll GetByCodigo(int codigo)
         {
-            string codigoSemZeros = codigo.TrimStart('0');
+            int codigoSemZeros = codigo.CompareTo(0);
             return _produtoAllRepository?.GetByCodigo(codigoSemZeros);
         }
 
@@ -76,7 +76,7 @@ namespace CasaColombo.Domain.Services.ProdOcorrFornLojas
             return _produtoAllRepository?.GetById(id);
         }
 
-        public void UploadCadastrar(string codigo, string nomeProduto)
+        public void UploadCadastrar(int codigo, string nomeProduto)
         {
            
             // Verifica se o produto já existe pelo código

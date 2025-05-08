@@ -11,7 +11,7 @@ namespace CasaColombo.Services.Model.Produtos
         [MinLength(3, ErrorMessage = "Informe no mínimo {1} caracteres.")]
         [MaxLength(255, ErrorMessage = "Informe no máximo {1} caracteres.")]
         public string? NomeProduto { get; set; }
-        public string? Codigo { get; set; }
+        public int? Codigo { get; set; }
         public string? CodigoFornecedor { get; set; }
     }
 }

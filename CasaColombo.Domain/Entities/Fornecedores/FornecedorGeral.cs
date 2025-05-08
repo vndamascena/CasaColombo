@@ -23,7 +23,7 @@ namespace CasaColombo.Domain.Entities.Fornecedores
 
         public List<Ocorrencia>? Ocorrencia { get; set; }
         public List<ProdutoPiso>? ProdutosPiso { get; set; }
-
+        public List<FornecProdFalt>? FornecProdFalt { get; set; }
         public List<ProdutoGeral>? ProdutosGeral { get; set; }
         #endregion
     }

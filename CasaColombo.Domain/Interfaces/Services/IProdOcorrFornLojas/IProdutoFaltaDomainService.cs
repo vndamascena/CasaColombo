@@ -11,11 +11,20 @@ namespace CasaColombo.Domain.Interfaces.Services.IProdOcorrFornLojas
     {
         ProdutoFalta Cadastrar(ProdutoFalta produtoFalta, string matricula);
         ProdutoFalta Atualizar(ProdutoFalta produtoFalta);
+        FornecProdFalt Autorizar(FornecProdFalt fornecProdFalt, string matricula);
+        ProdutoFalta AtualizarLoja(ProdutoFalta produtoFalta);
         ProdutoFalta Delete(int id);
-        ProdutoFalta ObterPorId(int id);
+        ProdutoFalta AtualizarStatusProduto(ProdutoFalta produtoFalta);
+        ProdutoFalta ProdutoObterPorId(int id);
         BaixaAutProdFalt ConfirmarBaixa(int id, string momeUsuario);
         BaixaAutProdFalt ConsultarPorId(int id);
+        FornecProdFalt CadastrarFornec(FornecProdFalt fornecProdFalt);
         List<BaixaAutProdFalt> ConsultarBaixaAll();
         List<ProdutoFalta> Consultar();
+        List<FornecProdFalt> ConsultarFornecAll(int produtoFaltaId);
+       
+        FornecProdFalt ExcluirFornec(int fornecProdFaltId);
+
+
     }
 }

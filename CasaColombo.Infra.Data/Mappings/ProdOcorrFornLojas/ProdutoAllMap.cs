@@ -28,7 +28,7 @@ namespace CasaColombo.Infra.Data.Mappings.ProdOcorrFornLojas
             builder.Property(p => p.DataHoraAlteracao).HasColumnName("DATAHORAALTERACAO").IsRequired();
 
             builder.Property(p => p.Ativo).HasColumnName("ATIVO").IsRequired();
-
+            builder.HasIndex(p => p.Codigo).IsUnique();
 
         }
     }

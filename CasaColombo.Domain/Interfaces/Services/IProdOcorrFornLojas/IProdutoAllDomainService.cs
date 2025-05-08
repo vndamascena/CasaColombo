@@ -12,11 +12,11 @@ namespace CasaColombo.Domain.Interfaces.Services.IProdOcorrFornLojas
         ProdutoAll Cadastrar(ProdutoAll produtoAll);
         ProdutoAll Atualizar(ProdutoAll produtoAll);
         ProdutoAll Delete(int id);
-        ProdutoAll GetByCodigo(string codigo);
+        ProdutoAll GetByCodigo(int codigo);
 
         ProdutoAll ObterPorId(int id);
         List<ProdutoAll> Consultar();
 
-        void UploadCadastrar(string codigo, string nomeProduto);
+        void UploadCadastrar(int codigo, string nomeProduto);
     }
 }

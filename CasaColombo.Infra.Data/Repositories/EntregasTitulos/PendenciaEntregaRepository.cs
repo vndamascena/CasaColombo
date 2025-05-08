@@ -37,7 +37,7 @@ namespace EntregaTitulo.Infra.Data.Repositories
         }
         public override List<PendenciaEntrega> GetAll()
         {
-            using (var dataContext = new DataContext())
+            using (var dataContext = new DataContextSecundaria())
                 return dataContext
                     .Set<PendenciaEntrega>()
 
@@ -48,7 +48,7 @@ namespace EntregaTitulo.Infra.Data.Repositories
 
         public PendenciaEntrega GetByEntregaId(int entregaId)
         {
-            using (var dataContext = new DataContext())
+            using (var dataContext = new DataContextSecundaria())
             {
                 return dataContext
                     .Set<PendenciaEntrega>()

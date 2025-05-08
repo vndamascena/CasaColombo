@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace CasaColombo.Domain.Interfaces.Repositories.IProdOcorrFornLojas
 {
-    public interface IProdutoAllRepository : IBaseRepository<ProdutoAll, int>   
+    public interface IFornecProdFaltRepository : IBaseRepository<FornecProdFalt, int>
     {
-        List<ProdutoAll> GetAll(bool ativo);
-        ProdutoAll GetByCodigo(int codigo);
+        List<FornecProdFalt> GetAll(bool ativo);
+        FornecProdFalt ObterPorId(int id);
+        void Remover(int id);
     }
 }

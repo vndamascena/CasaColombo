@@ -2,7 +2,7 @@
 {
     public class BaixaAutProdFaltPostModel
     {
-        public string? Observacao { get; set; }
+        
       
         
     }

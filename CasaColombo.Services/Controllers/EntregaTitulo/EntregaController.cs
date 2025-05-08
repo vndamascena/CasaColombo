@@ -262,7 +262,7 @@ namespace CasaColombo.Services.Controllers.EntregaTitulo
                 //HTTP 201 (OK)
                 return StatusCode(200, new
                 {
-                    Message = "Produto atualizado com sucesso",
+                    Message = "Entrega atualizada com sucesso",
                     entregaGetModel
                 });
             }

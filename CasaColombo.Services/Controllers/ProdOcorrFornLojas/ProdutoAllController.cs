@@ -137,7 +137,7 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
 
         [HttpGet("codigo")]
         [ProducesResponseType(typeof(ProdutoAllGetModel), 200)]
-        public IActionResult GetByCodigo(string codigo)
+        public IActionResult GetByCodigo(int codigo)
         {
             try
             {
@@ -170,7 +170,7 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
                 using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
                 {
                     var erros = new List<string>();
-                    var produtosParaCadastro = new List<(string Codigo, string NomeProduto)>();
+                    var produtosParaCadastro = new List<(int Codigo, string NomeProduto)>();
 
                     try
                     {
@@ -182,7 +182,12 @@ namespace CasaColombo.Services.Controllers.ProdOcorrFornLojas
                         {
                             try
                             {
-                                var codigo = csv.GetField(0).Trim();
+                                var codigoStr = csv.GetField(0).Trim();
+                                if (!int.TryParse(codigoStr, out int codigo))
+                                {
+                                    erros.Add($"Código inválido: '{codigoStr}'");
+                                    continue;
+                                }
                                 var nomeProduto = csv.GetField(1).Trim();
 
                                 produtosParaCadastro.Add((codigo, nomeProduto));

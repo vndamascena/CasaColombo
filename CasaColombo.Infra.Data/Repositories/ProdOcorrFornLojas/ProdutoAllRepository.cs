@@ -22,16 +22,16 @@ namespace CasaColombo.Infra.Data.Repositories.ProdOcorrFornLojas
                     .ToList();}
         }
 
-        public ProdutoAll GetByCodigo(string codigo)
+        public ProdutoAll GetByCodigo(int codigo)
         {
-            string codigoSemZeros = codigo.TrimStart('0');
+            
 
             using (var dataContext = new DataContext())
             {
                 return dataContext
                     .Set<ProdutoAll>()
                     .AsEnumerable()  
-                    .FirstOrDefault(p => p.Codigo.TrimStart('0') == codigoSemZeros);
+                    .FirstOrDefault(p => p.Codigo == codigo);
             }
         }
 
